@@ -722,12 +722,12 @@
   "Partly scanned": "一部のみスキャン",
   "The file is larger than the {limit} MB upload limit and the cloud does not know its fingerprint, so it was not uploaded.": "ファイルが {limit} MB のアップロード上限を超え、クラウドが指紋を知らないため、アップロードされませんでした。",
   "Show the download icon in fullscreen videos": "全画面の動画でダウンロードアイコンを表示",
-  "On by default. When a video plays in fullscreen, the browser extension shows a small download icon in the top-left corner. Its \u00d7 button hides it on that page only; turn this off to hide it everywhere.": "既定でオン。動画を全画面で再生すると、ブラウザー拡張機能が左上に小さなダウンロードアイコンを表示します。アイコンの × ボタンはそのページでのみ非表示にします。すべてのページで非表示にするにはこれをオフにします。",
+  "On by default. When a video plays in fullscreen, the browser extension shows a small download icon in the top-left corner. Its × button hides it on that page only; turn this off to hide it everywhere.": "既定でオン。動画を全画面で再生すると、ブラウザー拡張機能が左上に小さなダウンロードアイコンを表示します。アイコンの × ボタンはそのページでのみ非表示にします。すべてのページで非表示にするにはこれをオフにします。",
   "Installing Deno": "Deno をインストール中",
   "Extracting Deno": "Deno を展開中",
   "Deno installed": "Deno をインストールしました",
   "Deno (YouTube challenges)": "Deno（YouTube のチャレンジ）",
-  "not installed \u2014 installed with the first YouTube video, needed for full YouTube speed": "未インストール — 最初の YouTube 動画で自動インストール。YouTube を全速でダウンロードするのに必要",
+  "not installed — installed with the first YouTube video, needed for full YouTube speed": "未インストール — 最初の YouTube 動画で自動インストール。YouTube を全速でダウンロードするのに必要",
   "Adding metadata": "メタデータを追加中",
   "Adding the thumbnail": "サムネイルを追加中",
   "Finishing": "仕上げ中",
@@ -752,5 +752,6 @@
   "Audio only (WAV)": "音声のみ (WAV)",
   "Audio only (ALAC)": "音声のみ (ALAC)",
   "Video format": "動画形式",
-  "MP4 (H.264, plays everywhere)": "MP4 (H.264、どこでも再生可能)"
+  "MP4 (H.264, plays everywhere)": "MP4 (H.264、どこでも再生可能)",
+  "Do not create subfolder for Other category, save uncategorized files directly to downloads folder": "「その他」カテゴリのサブフォルダーを作成せず、分類されていないファイルを直接ダウンロードフォルダーに保存する"
 }

@@ -722,12 +722,12 @@
   "Partly scanned": "Analysé en partie",
   "The file is larger than the {limit} MB upload limit and the cloud does not know its fingerprint, so it was not uploaded.": "Le fichier dépasse la limite d’envoi de {limit} Mo et le cloud ne connaît pas son empreinte ; il n’a donc pas été envoyé.",
   "Show the download icon in fullscreen videos": "Afficher l’icône de téléchargement dans les vidéos en plein écran",
-  "On by default. When a video plays in fullscreen, the browser extension shows a small download icon in the top-left corner. Its \u00d7 button hides it on that page only; turn this off to hide it everywhere.": "Activé par défaut. Quand une vidéo est lue en plein écran, l’extension du navigateur affiche une petite icône de téléchargement en haut à gauche. Son bouton × la masque uniquement sur cette page ; désactivez cette option pour la masquer partout.",
+  "On by default. When a video plays in fullscreen, the browser extension shows a small download icon in the top-left corner. Its × button hides it on that page only; turn this off to hide it everywhere.": "Activé par défaut. Quand une vidéo est lue en plein écran, l’extension du navigateur affiche une petite icône de téléchargement en haut à gauche. Son bouton × la masque uniquement sur cette page ; désactivez cette option pour la masquer partout.",
   "Installing Deno": "Installation de Deno",
   "Extracting Deno": "Extraction de Deno",
   "Deno installed": "Deno installé",
   "Deno (YouTube challenges)": "Deno (défis YouTube)",
-  "not installed \u2014 installed with the first YouTube video, needed for full YouTube speed": "non installé — installé avec la première vidéo YouTube, nécessaire pour la pleine vitesse de YouTube",
+  "not installed — installed with the first YouTube video, needed for full YouTube speed": "non installé — installé avec la première vidéo YouTube, nécessaire pour la pleine vitesse de YouTube",
   "Adding metadata": "Ajout des métadonnées",
   "Adding the thumbnail": "Ajout de la miniature",
   "Finishing": "Finalisation",
@@ -752,5 +752,6 @@
   "Audio only (WAV)": "Audio seul (WAV)",
   "Audio only (ALAC)": "Audio seul (ALAC)",
   "Video format": "Format vidéo",
-  "MP4 (H.264, plays everywhere)": "MP4 (H.264, lisible partout)"
+  "MP4 (H.264, plays everywhere)": "MP4 (H.264, lisible partout)",
+  "Do not create subfolder for Other category, save uncategorized files directly to downloads folder": "Ne pas créer de sous-dossier pour la catégorie Autre, enregistrer les fichiers sans catégorie directement dans le dossier de téléchargement"
 }

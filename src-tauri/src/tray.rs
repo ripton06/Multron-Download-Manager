@@ -7,7 +7,7 @@ use tauri::{AppHandle, Manager as _, Wry};
 use crate::i18n::t;
 use crate::manager::{GlobalStats, Manager, OverallProgress};
 
-const TRAY_ID: &str = "main";
+pub const TRAY_ID: &str = "main";
 
 fn build_menu(app: &AppHandle, lang: &str) -> tauri::Result<Menu<Wry>> {
     Menu::with_items(
@@ -39,7 +39,10 @@ pub fn create(app: &AppHandle, lang: &str) -> tauri::Result<()> {
                 "resume_all" => {
                     tauri::async_runtime::spawn(async move { mgr.resume_all().await });
                 }
-                "quit" => app.exit(0),
+                "quit" => {
+                    let _ = app.remove_tray_by_id(TRAY_ID);
+                    app.exit(0);
+                }
                 _ => {}
             }
         })
@@ -53,8 +56,11 @@ pub fn create(app: &AppHandle, lang: &str) -> tauri::Result<()> {
                 crate::show_main_window(tray.app_handle());
             }
         });
-    if let Some(icon) = app.default_window_icon() {
-        builder = builder.icon(icon.clone());
+    let icon = app.default_window_icon().cloned().or_else(|| {
+        tauri::image::Image::from_bytes(include_bytes!("../icons/32x32.png")).ok()
+    });
+    if let Some(icon) = icon {
+        builder = builder.icon(icon);
     }
     builder.build(app)?;
     Ok(())
@@ -127,8 +133,10 @@ mod overlay {
 
 fn build_frames(app: &AppHandle, accent: &str) -> Frames {
     let color = crate::spinner::accent(accent);
+    let fallback = tauri::image::Image::from_bytes(include_bytes!("../icons/32x32.png")).ok();
     let base = app
         .default_window_icon()
+        .or(fallback.as_ref())
         .map(|i| crate::spinner::downscale(i.rgba(), i.width(), i.height(), TRAY_SIZE))
         .unwrap_or_else(|| vec![0u8; (TRAY_SIZE * TRAY_SIZE * 4) as usize]);
     let tray = (0..crate::spinner::FRAMES)

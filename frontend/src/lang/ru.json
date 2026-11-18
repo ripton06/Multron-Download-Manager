@@ -722,12 +722,12 @@
   "Partly scanned": "Проверено частично",
   "The file is larger than the {limit} MB upload limit and the cloud does not know its fingerprint, so it was not uploaded.": "Файл больше лимита загрузки {limit} МБ, а его отпечаток облаку неизвестен, поэтому он не был загружен.",
   "Show the download icon in fullscreen videos": "Показывать значок загрузки в полноэкранных видео",
-  "On by default. When a video plays in fullscreen, the browser extension shows a small download icon in the top-left corner. Its \u00d7 button hides it on that page only; turn this off to hide it everywhere.": "Включено по умолчанию. Когда видео воспроизводится на весь экран, расширение браузера показывает маленький значок загрузки в левом верхнем углу. Кнопка × скрывает его только на этой странице; выключите этот параметр, чтобы скрыть его везде.",
+  "On by default. When a video plays in fullscreen, the browser extension shows a small download icon in the top-left corner. Its × button hides it on that page only; turn this off to hide it everywhere.": "Включено по умолчанию. Когда видео воспроизводится на весь экран, расширение браузера показывает маленький значок загрузки в левом верхнем углу. Кнопка × скрывает его только на этой странице; выключите этот параметр, чтобы скрыть его везде.",
   "Installing Deno": "Установка Deno",
   "Extracting Deno": "Распаковка Deno",
   "Deno installed": "Deno установлен",
   "Deno (YouTube challenges)": "Deno (проверки YouTube)",
-  "not installed \u2014 installed with the first YouTube video, needed for full YouTube speed": "не установлен — устанавливается с первым видео YouTube, нужен для полной скорости YouTube",
+  "not installed — installed with the first YouTube video, needed for full YouTube speed": "не установлен — устанавливается с первым видео YouTube, нужен для полной скорости YouTube",
   "Adding metadata": "Добавление метаданных",
   "Adding the thumbnail": "Добавление обложки",
   "Finishing": "Завершение",
@@ -752,5 +752,6 @@
   "Audio only (WAV)": "Только аудио (WAV)",
   "Audio only (ALAC)": "Только аудио (ALAC)",
   "Video format": "Формат видео",
-  "MP4 (H.264, plays everywhere)": "MP4 (H.264, воспроизводится везде)"
+  "MP4 (H.264, plays everywhere)": "MP4 (H.264, воспроизводится везде)",
+  "Do not create subfolder for Other category, save uncategorized files directly to downloads folder": "Не создавать подпапку для категории Прочее, сохранять файлы без категории в папку загрузок"
 }

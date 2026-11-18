@@ -7,7 +7,9 @@
   import { cloudView } from '../lib/cloud';
   import CloudScanWindow from './CloudScanWindow.svelte';
 
-  let deleteFiles = $state(false);
+  let deleteFiles = $state(
+    typeof localStorage !== 'undefined' && localStorage.getItem('multron:deleteFiles') === 'true'
+  );
 
   async function confirmRemove() {
     const targets = app.removeTargets;
@@ -17,7 +19,9 @@
     if (app.selectedId && ids.includes(app.selectedId)) app.selectedId = null;
     app.checked = app.checked.filter((id) => !ids.includes(id));
     const files = deleteFiles;
-    deleteFiles = false;
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('multron:deleteFiles', String(files));
+    }
     if (ids.length === 1) await app.run(() => api.remove(ids[0], files));
     else await app.run(() => api.removeMany(ids, files));
   }
@@ -249,7 +253,16 @@
         {/if}
       </ul>
       <label class="flex items-center gap-2 text-[12.5px]">
-        <input type="checkbox" class="check" bind:checked={deleteFiles} />{t('Also delete the downloaded files')}
+        <input
+          type="checkbox"
+          class="check"
+          bind:checked={deleteFiles}
+          onchange={() => {
+            if (typeof localStorage !== 'undefined') {
+              localStorage.setItem('multron:deleteFiles', String(deleteFiles));
+            }
+          }}
+        />{t('Also delete the downloaded files')}
       </label>
       <div class="flex justify-end gap-2">
         <button class="btn" onclick={() => (app.removeTargets = [])}>{t('Cancel')}</button>

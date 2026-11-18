@@ -36,8 +36,8 @@ use model::AddRequest;
 
 pub fn show_main_window(app: &AppHandle) {
     if let Some(w) = app.get_webview_window("main") {
-        let _ = w.unminimize();
         let _ = w.show();
+        let _ = w.unminimize();
         let _ = w.set_focus();
     }
 }
@@ -98,6 +98,60 @@ pub fn run() {
             }
             if let Some(w) = handle.get_webview_window("main") {
                 appearance::apply_settings(&w, &settings);
+
+                let state_file = mgr.paths.data.join("window-state.json");
+                let mut restored = false;
+                if let Ok(data) = std::fs::read_to_string(&state_file) {
+                    if let Ok(v) = serde_json::from_str::<serde_json::Value>(&data) {
+                        if let (Some(width), Some(height)) = (
+                            v.get("width").and_then(|w| w.as_f64()),
+                            v.get("height").and_then(|h| h.as_f64()),
+                        ) {
+                            let _ = w.set_size(tauri::LogicalSize::new(width, height));
+                            restored = true;
+                        }
+                        if v.get("maximized").and_then(|m| m.as_bool()).unwrap_or(false) {
+                            let _ = w.maximize();
+                            restored = true;
+                        }
+                    }
+                }
+
+                if !restored {
+                    if let Ok(Some(monitor)) = w.current_monitor() {
+                        let scale = monitor.scale_factor();
+                        let size = monitor.size();
+                        let avail_h = (size.height as f64) / scale;
+                        let avail_w = (size.width as f64) / scale;
+                        let target_w = 1035.0_f64.min(avail_w - 40.0).max(800.0);
+                        let target_h = 650.0_f64.min(avail_h - 110.0).max(480.0);
+                        let _ = w.set_size(tauri::LogicalSize::new(target_w, target_h));
+                        let _ = w.center();
+                    }
+                }
+
+                let w_for_event = w.clone();
+                let state_file_clone = state_file.clone();
+                w.on_window_event(move |event| {
+                    if let tauri::WindowEvent::Resized(_) = event {
+                        if let Ok(is_max) = w_for_event.is_maximized() {
+                            if is_max {
+                                let _ = std::fs::write(&state_file_clone, r#"{"maximized":true}"#);
+                            } else if let Ok(size) = w_for_event.inner_size() {
+                                if let Ok(scale) = w_for_event.scale_factor() {
+                                    let w_log = size.width as f64 / scale;
+                                    let h_log = size.height as f64 / scale;
+                                    let payload = serde_json::json!({
+                                        "width": w_log,
+                                        "height": h_log,
+                                        "maximized": false
+                                    });
+                                    let _ = std::fs::write(&state_file_clone, payload.to_string());
+                                }
+                            }
+                        }
+                    }
+                });
             }
 
             let minimized =
@@ -244,6 +298,7 @@ pub fn run() {
             }
         }
         RunEvent::Exit => {
+            let _ = app.remove_tray_by_id(crate::tray::TRAY_ID);
             if let Some(mgr) = app.try_state::<Arc<Manager>>() {
                 let mgr = mgr.inner().clone();
                 tauri::async_runtime::block_on(async move { mgr.shutdown().await });

@@ -722,12 +722,12 @@
   "Partly scanned": "部分已掃描",
   "The file is larger than the {limit} MB upload limit and the cloud does not know its fingerprint, so it was not uploaded.": "檔案超過 {limit} MB 上傳上限，且雲端不認識它的指紋，因此未上傳。",
   "Show the download icon in fullscreen videos": "在全螢幕影片中顯示下載圖示",
-  "On by default. When a video plays in fullscreen, the browser extension shows a small download icon in the top-left corner. Its \u00d7 button hides it on that page only; turn this off to hide it everywhere.": "預設開啟。影片全螢幕播放時，瀏覽器擴充功能會在左上角顯示一個小下載圖示。圖示的 × 按鈕只在目前頁面隱藏它；關閉此選項可在所有頁面隱藏。",
+  "On by default. When a video plays in fullscreen, the browser extension shows a small download icon in the top-left corner. Its × button hides it on that page only; turn this off to hide it everywhere.": "預設開啟。影片全螢幕播放時，瀏覽器擴充功能會在左上角顯示一個小下載圖示。圖示的 × 按鈕只在目前頁面隱藏它；關閉此選項可在所有頁面隱藏。",
   "Installing Deno": "正在安裝 Deno",
   "Extracting Deno": "正在解壓縮 Deno",
   "Deno installed": "Deno 已安裝",
   "Deno (YouTube challenges)": "Deno（YouTube 驗證）",
-  "not installed \u2014 installed with the first YouTube video, needed for full YouTube speed": "未安裝 — 首次下載 YouTube 影片時安裝，YouTube 全速下載需要它",
+  "not installed — installed with the first YouTube video, needed for full YouTube speed": "未安裝 — 首次下載 YouTube 影片時安裝，YouTube 全速下載需要它",
   "Adding metadata": "正在新增中繼資料",
   "Adding the thumbnail": "正在新增縮圖",
   "Finishing": "正在完成",
@@ -752,5 +752,6 @@
   "Audio only (WAV)": "僅音訊 (WAV)",
   "Audio only (ALAC)": "僅音訊 (ALAC)",
   "Video format": "影片格式",
-  "MP4 (H.264, plays everywhere)": "MP4（H.264，隨處可播放）"
+  "MP4 (H.264, plays everywhere)": "MP4（H.264，隨處可播放）",
+  "Do not create subfolder for Other category, save uncategorized files directly to downloads folder": "不為「其他」分類建立子資料夾，將未分類的檔案直接儲存到下載資料夾"
 }

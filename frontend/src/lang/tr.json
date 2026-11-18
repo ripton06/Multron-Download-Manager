@@ -722,12 +722,12 @@
   "Partly scanned": "Kısmen tarandı",
   "The file is larger than the {limit} MB upload limit and the cloud does not know its fingerprint, so it was not uploaded.": "Dosya {limit} MB yükleme sınırından büyük ve bulut parmak izini tanımıyor, bu yüzden yüklenmedi.",
   "Show the download icon in fullscreen videos": "Tam ekran videolarda indirme simgesini göster",
-  "On by default. When a video plays in fullscreen, the browser extension shows a small download icon in the top-left corner. Its \u00d7 button hides it on that page only; turn this off to hide it everywhere.": "Varsayılan olarak açık. Bir video tam ekran oynatıldığında tarayıcı eklentisi sol üst köşede küçük bir indirme simgesi gösterir. Simgenin × düğmesi onu yalnızca o sayfada gizler; her yerde gizlemek için bunu kapatın.",
+  "On by default. When a video plays in fullscreen, the browser extension shows a small download icon in the top-left corner. Its × button hides it on that page only; turn this off to hide it everywhere.": "Varsayılan olarak açık. Bir video tam ekran oynatıldığında tarayıcı eklentisi sol üst köşede küçük bir indirme simgesi gösterir. Simgenin × düğmesi onu yalnızca o sayfada gizler; her yerde gizlemek için bunu kapatın.",
   "Installing Deno": "Deno kuruluyor",
   "Extracting Deno": "Deno çıkarılıyor",
   "Deno installed": "Deno kuruldu",
   "Deno (YouTube challenges)": "Deno (YouTube doğrulamaları)",
-  "not installed \u2014 installed with the first YouTube video, needed for full YouTube speed": "kurulu değil — ilk YouTube videosuyla kurulur, YouTube’un tam hızı için gerekli",
+  "not installed — installed with the first YouTube video, needed for full YouTube speed": "kurulu değil — ilk YouTube videosuyla kurulur, YouTube’un tam hızı için gerekli",
   "Adding metadata": "Bilgiler ekleniyor",
   "Adding the thumbnail": "Küçük resim ekleniyor",
   "Finishing": "Tamamlanıyor",
@@ -752,5 +752,6 @@
   "Audio only (WAV)": "Yalnızca ses (WAV)",
   "Audio only (ALAC)": "Yalnızca ses (ALAC)",
   "Video format": "Video biçimi",
-  "MP4 (H.264, plays everywhere)": "MP4 (H.264, her yerde açılır)"
+  "MP4 (H.264, plays everywhere)": "MP4 (H.264, her yerde açılır)",
+  "Do not create subfolder for Other category, save uncategorized files directly to downloads folder": "Diğer kategorisi için alt klasör oluşturma, kategorisiz dosyaları doğrudan indirme klasörüne kaydet"
 }

@@ -1,30 +1,30 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <title>Multron Download Manager</title>
+  <title>Multron — менеджер загрузок</title>
   <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
   <header>
     <img src="icons/icon64.png" alt="" />
     <div>
-      <h1>Multron Download Manager</h1>
-      <p id="status"><span class="dot"></span><span id="status-text">Checking…</span></p>
+      <h1>Multron — менеджер загрузок</h1>
+      <p id="status"><span class="dot"></span><span id="status-text">Проверка…</span></p>
     </div>
-    <button id="connect" class="btn accent" hidden>Connect</button>
+    <button id="connect" class="btn accent" hidden>Подключить</button>
   </header>
 
   <section id="perm-box" class="warn" hidden>
-    <div>Multron Download Manager needs access to websites to show the <b>Download video</b> button and take over downloads.</div>
-    <button id="grant" class="btn accent">Allow on all sites</button>
+    <div>Multron нужен доступ к сайтам, чтобы показывать кнопку <b>Скачать видео</b> и перехватывать загрузки.</div>
+    <button id="grant" class="btn accent">Разрешить на всех сайтах</button>
   </section>
 
   <section id="page-box" hidden>
-    <div class="label" id="page-label">This page</div>
+    <div class="label" id="page-label">Текущая страница</div>
     <div class="row">
       <select id="quality">
-        <option value="best">Best quality</option>
+        <option value="best">Лучшее качество</option>
         <option value="6480">12K</option>
         <option value="4320">8K</option>
         <option value="2880">5K</option>
@@ -36,23 +36,23 @@
         <option value="360">360p</option>
         <option value="240">240p</option>
         <option value="144">144p</option>
-        <option value="audio-mp3">Audio (MP3)</option>
-        <option value="audio-m4a">Audio (M4A)</option>
-        <option value="audio-aac">Audio (AAC)</option>
-        <option value="audio-opus">Audio (Opus)</option>
-        <option value="audio-vorbis">Audio (OGG Vorbis)</option>
-        <option value="audio-flac">Audio (FLAC)</option>
-        <option value="audio-wav">Audio (WAV)</option>
-        <option value="audio-alac">Audio (ALAC)</option>
+        <option value="audio-mp3">Аудио (MP3)</option>
+        <option value="audio-m4a">Аудио (M4A)</option>
+        <option value="audio-aac">Аудио (AAC)</option>
+        <option value="audio-opus">Аудио (Opus)</option>
+        <option value="audio-vorbis">Аудио (OGG Vorbis)</option>
+        <option value="audio-flac">Аудио (FLAC)</option>
+        <option value="audio-wav">Аудио (WAV)</option>
+        <option value="audio-alac">Аудио (ALAC)</option>
       </select>
-      <button id="send-page" class="btn primary">Download</button>
+      <button id="send-page" class="btn primary">Скачать</button>
     </div>
     <div class="row format-row">
-      <span>Video format</span>
+      <span>Формат видео</span>
       <select id="container">
-        <option value="default">Default</option>
+        <option value="default">По умолчанию</option>
         <option value="mp4">MP4</option>
-        <option value="mp4-h264">MP4 (H.264, plays everywhere)</option>
+        <option value="mp4-h264">MP4 (H.264, совместимый)</option>
         <option value="mkv">MKV</option>
         <option value="webm">WebM</option>
         <option value="mov">MOV</option>
@@ -64,35 +64,36 @@
   </section>
 
   <section>
-    <div class="label">Everything on this page</div>
+    <div class="label">Всё на этой странице</div>
     <div class="row">
-      <select id="grab-pages" title="Infinite feeds (Reddit, Instagram, X…) load more while scrolling">
-        <option value="0">Visible part</option>
-        <option value="5">Scroll 5 screens</option>
-        <option value="20">Scroll 20 screens</option>
-        <option value="60">Scroll 60 screens</option>
+      <select id="grab-pages" title="Бесконечные ленты (Reddit, Instagram, X…) подгружают новые записи при прокрутке">
+        <option value="0">Видимая часть</option>
+        <option value="5">Прокрутить 5 экранов</option>
+        <option value="20">Прокрутить 20 экранов</option>
+        <option value="60">Прокрутить 60 экранов</option>
       </select>
-      <button id="grab" class="btn">Download all…</button>
+      <button id="grab" class="btn">Скачать всё…</button>
     </div>
   </section>
 
   <section>
-    <div class="label">Link or magnet</div>
+    <div class="label">Ссылка или magnet-ссылка</div>
     <div class="row">
-      <input id="link" placeholder="https://… or magnet:?…" />
-      <button id="send-link" class="btn">Send</button>
+      <input id="link" placeholder="https://… или magnet:?…" />
+      <button id="send-link" class="btn">Отправить</button>
     </div>
   </section>
 
   <section class="opts">
-    <label><input type="checkbox" id="intercept" /> Take over browser downloads</label>
-    <label><input type="checkbox" id="interceptMagnets" /> Open magnet links in Multron Download Manager</label>
-    <label><input type="checkbox" id="mediaButton" /> Show the download button on video pages</label>
-    <label><input type="checkbox" id="sendCookies" /> Send site cookies (private / login-only files)</label>
+    <label><input type="checkbox" id="intercept" /> Перехватывать загрузки браузера</label>
+    <label><input type="checkbox" id="interceptMagnets" /> Открывать magnet-ссылки в Multron</label>
+    <label><input type="checkbox" id="mediaButton" /> Показывать кнопку скачивания на страницах с видео</label>
+    <label><input type="checkbox" id="sendCookies" /> Передавать cookie сайта (для файлов с авторизацией)</label>
     <div class="grid">
-      <span>Ignore files smaller than (KB)</span><input id="minSizeKB" type="number" min="0" />
-      <span>Never take over from</span><input id="skipDomains" placeholder="example.com other.org" />
-      <span>App port</span><input id="port" type="number" min="1024" max="65535" />
+      <span>Не перехватывать файлы меньше (КБ)</span><input id="minSizeKB" type="number" min="0" />
+      <span>Не перехватывать загрузки с сайтов</span><input id="skipDomains" placeholder="example.com other.org" />
+      <span>Не перехватывать расширения</span><input id="skipExtensions" placeholder="pdf, torrent, docx" />
+      <span>Порт приложения</span><input id="port" type="number" min="1024" max="65535" />
     </div>
   </section>
 

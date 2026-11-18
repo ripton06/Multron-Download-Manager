@@ -722,12 +722,12 @@
   "Partly scanned": "部分已扫描",
   "The file is larger than the {limit} MB upload limit and the cloud does not know its fingerprint, so it was not uploaded.": "文件超过 {limit} MB 上传上限，且云端不认识它的指纹，因此未上传。",
   "Show the download icon in fullscreen videos": "在全屏视频中显示下载图标",
-  "On by default. When a video plays in fullscreen, the browser extension shows a small download icon in the top-left corner. Its \u00d7 button hides it on that page only; turn this off to hide it everywhere.": "默认开启。视频全屏播放时，浏览器扩展会在左上角显示一个小下载图标。图标的 × 按钮只在当前页面隐藏它；关闭此选项可在所有页面隐藏。",
+  "On by default. When a video plays in fullscreen, the browser extension shows a small download icon in the top-left corner. Its × button hides it on that page only; turn this off to hide it everywhere.": "默认开启。视频全屏播放时，浏览器扩展会在左上角显示一个小下载图标。图标的 × 按钮只在当前页面隐藏它；关闭此选项可在所有页面隐藏。",
   "Installing Deno": "正在安装 Deno",
   "Extracting Deno": "正在解压 Deno",
   "Deno installed": "Deno 已安装",
   "Deno (YouTube challenges)": "Deno（YouTube 验证）",
-  "not installed \u2014 installed with the first YouTube video, needed for full YouTube speed": "未安装 — 首次下载 YouTube 视频时安装，YouTube 全速下载需要它",
+  "not installed — installed with the first YouTube video, needed for full YouTube speed": "未安装 — 首次下载 YouTube 视频时安装，YouTube 全速下载需要它",
   "Adding metadata": "正在添加元数据",
   "Adding the thumbnail": "正在添加缩略图",
   "Finishing": "正在完成",
@@ -752,5 +752,6 @@
   "Audio only (WAV)": "仅音频 (WAV)",
   "Audio only (ALAC)": "仅音频 (ALAC)",
   "Video format": "视频格式",
-  "MP4 (H.264, plays everywhere)": "MP4（H.264，随处可播放）"
+  "MP4 (H.264, plays everywhere)": "MP4（H.264，随处可播放）",
+  "Do not create subfolder for Other category, save uncategorized files directly to downloads folder": "不为“其他”分类创建子文件夹，将未分类的文件直接保存到下载文件夹"
 }

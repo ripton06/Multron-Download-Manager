@@ -1,4 +1,5 @@
 
+// Новый URL фонового скрипта заставляет браузер загрузить переведённую версию.
 const DEFAULTS = {
   port: 6801,
   intercept: true,
@@ -7,7 +8,8 @@ const DEFAULTS = {
   mediaButton: true,
   fullscreenButton: true,
   interceptMagnets: true,
-  skipDomains: ''
+  skipDomains: '',
+  skipExtensions: ''
 };
 
 const MEDIA_HOSTS = [
@@ -255,7 +257,7 @@ function updateBadge(info) {
   chrome.action.setBadgeBackgroundColor({ color: !info ? '#ff5a52' : '#ffb340' }).catch(() => {});
 }
 
-function notify(message, title = 'Multron Download Manager') {
+function notify(message, title = 'Multron — менеджер загрузок') {
   chrome.notifications
     .create({ type: 'basic', iconUrl: 'icons/icon128.png', title, message })
     .catch(() => {});
@@ -299,16 +301,16 @@ async function send(req) {
     await ensureRunning();
     r = await call('download', body, 15000);
   } catch {
-    notify('Multron Download Manager is not running and could not be started. Start the app and try again.');
+    notify('Не удалось запустить Multron. Запустите приложение и повторите попытку.');
     return false;
   }
   if (r.status === 401) {
-    notify('Approve this browser in the Multron Download Manager window, then try again.', 'Multron Download Manager: connection request');
+    notify('Подтвердите доступ для этого браузера в окне Multron и повторите попытку.', 'Multron: запрос подключения');
     pingCache.at = 0;
     return false;
   }
   if (!r.ok) {
-    notify(r.data?.error ?? `The app rejected the download (HTTP ${r.status}).`);
+    notify(r.data?.error ?? `Приложение отклонило загрузку (HTTP ${r.status}).`);
     return false;
   }
   return true;
@@ -319,11 +321,11 @@ async function grabPage(tabId, pages = 0) {
   try {
     page = await chrome.tabs.sendMessage(tabId, { type: 'grab', pages });
   } catch {
-    return { error: 'Reload the page and try again (the extension is not active on it yet).' };
+    return { error: 'Обновите страницу и повторите попытку: расширение ещё не активно на ней.' };
   }
   if (!page?.items?.length) {
-    notify('Nothing to download was found on this page.');
-    return { error: 'Nothing to download was found on this page.' };
+    notify('На этой странице не найдено файлов для скачивания.');
+    return { error: 'На этой странице не найдено файлов для скачивания.' };
   }
   const hosts = [...new Set([page.pageUrl, ...page.items.map((i) => i.url)].map((u) => {
     try {
@@ -338,26 +340,26 @@ async function grabPage(tabId, pages = 0) {
     await ensureRunning();
     r = await call('batch', body, 15000);
   } catch {
-    notify('Multron Download Manager is not running. Start the app and try again.');
-    return { error: 'Multron Download Manager is not running.' };
+    notify('Multron не запущен. Запустите приложение и повторите попытку.');
+    return { error: 'Multron не запущен.' };
   }
   if (r.status === 401) {
-    notify('Approve this browser in the Multron Download Manager window, then try again.', 'Multron Download Manager: connection request');
-    return { error: 'Approve this browser in Multron Download Manager first.' };
+    notify('Подтвердите доступ для этого браузера в окне Multron и повторите попытку.', 'Multron: запрос подключения');
+    return { error: 'Сначала подтвердите доступ для этого браузера в Multron.' };
   }
-  if (!r.ok) return { error: r.data?.error ?? `HTTP ${r.status}` };
+  if (!r.ok) return { error: r.data?.error ?? `Приложение отклонило запрос (HTTP ${r.status}).` };
   return { ok: true, count: page.items.length };
 }
 
 function createMenus() {
   chrome.contextMenus.removeAll(() => {
     const add = (id, title, contexts) => chrome.contextMenus.create({ id, title, contexts });
-    add('multron-link', 'Download link with Multron Download Manager', ['link']);
-    add('multron-link-media', 'Download video/audio from link with Multron Download Manager', ['link']);
-    add('multron-media', 'Download this media with Multron Download Manager', ['video', 'audio', 'image']);
-    add('multron-page', 'Download video on this page with Multron Download Manager', ['page']);
-    add('multron-grab', 'Download all from this page with Multron Download Manager…', ['page']);
-    add('multron-selection', 'Download selected link with Multron Download Manager', ['selection']);
+    add('multron-link', 'Скачать по ссылке через Multron', ['link']);
+    add('multron-link-media', 'Скачать видео/аудио по ссылке через Multron', ['link']);
+    add('multron-media', 'Скачать медиафайл через Multron', ['video', 'audio', 'image']);
+    add('multron-page', 'Скачать видео с этой страницы через Multron', ['page']);
+    add('multron-grab', 'Скачать всё с этой страницы через Multron…', ['page']);
+    add('multron-selection', 'Скачать по выделенной ссылке через Multron', ['selection']);
   });
 }
 
@@ -403,7 +405,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     case 'multron-selection': {
       const text = (info.selectionText || '').trim();
       if (/^(https?:\/\/|magnet:)/i.test(text)) await send({ url: text, kind: 'auto', referrer: page });
-      else notify('The selection is not a link.');
+      else notify('Выделенный текст не является ссылкой.');
       break;
     }
   }
@@ -455,6 +457,20 @@ async function takeOver(item, url, giveBack) {
     .map((d) => d.trim().toLowerCase())
     .filter(Boolean);
   if (skip.some((d) => host === d || host.endsWith('.' + d))) return giveBack();
+
+  const skipExts = (s.skipExtensions || '')
+    .split(/[\s,]+/)
+    .map((d) => d.trim().toLowerCase().replace(/^\./, ''))
+    .filter(Boolean);
+  if (skipExts.length > 0) {
+    const rawName = (item.filename || url.split('?')[0].split('#')[0]).split(/[\\/]/).pop() || '';
+    const dotIdx = rawName.lastIndexOf('.');
+    if (dotIdx !== -1) {
+      const ext = rawName.slice(dotIdx + 1).toLowerCase();
+      if (skipExts.includes(ext)) return giveBack();
+    }
+  }
+
   const size = item.totalBytes > 0 ? item.totalBytes : item.fileSize;
   if (s.minSizeKB > 0 && size > 0 && size < s.minSizeKB * 1024) return giveBack();
 
@@ -462,7 +478,7 @@ async function takeOver(item, url, giveBack) {
   if (!info) return giveBack();
   if (!info.paired) {
     call('pair', {}, 4000).catch(() => {});
-    notify('Approve this browser in the Multron Download Manager window. The download waits until then.', 'Multron Download Manager: connection request');
+    notify('Подтвердите доступ для этого браузера в окне Multron. Загрузка ожидает подтверждения.', 'Multron: запрос подключения');
     if (!(await waitForApproval(60000))) return giveBack();
   }
 

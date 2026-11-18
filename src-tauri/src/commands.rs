@@ -661,5 +661,6 @@ pub async fn install_app_update(app: AppHandle, mgr: Mgr<'_>) -> R<()> {
 
 #[tauri::command]
 pub fn quit_app(app: AppHandle) {
+    let _ = app.remove_tray_by_id(crate::tray::TRAY_ID);
     app.exit(0);
 }

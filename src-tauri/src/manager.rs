@@ -227,13 +227,13 @@ fn build_api_client() -> reqwest::Client {
 
 fn category_dir(c: Category) -> &'static str {
     match c {
-        Category::Video => "Video",
-        Category::Music => "Music",
-        Category::Documents => "Documents",
-        Category::Archives => "Archives",
-        Category::Programs => "Programs",
-        Category::Images => "Images",
-        Category::Other => "Other",
+        Category::Video => "(Видео)",
+        Category::Music => "(Музыка)",
+        Category::Documents => "(Документы)",
+        Category::Archives => "(Архивы)",
+        Category::Programs => "(Программы)",
+        Category::Images => "(Разное)",
+        Category::Other => "(Разное)",
     }
 }
 
@@ -840,7 +840,7 @@ impl Manager {
                     }
                 }
                 rec.category = util::category_for(&name);
-                let dir = self.target_dir(&base_dir, rec.category, settings.organize_by_category);
+                let dir = self.target_dir(&base_dir, rec.category, settings.organize_by_category, settings.skip_other_category_folder);
                 std::fs::create_dir_all(&dir).ok();
                 let path = util::unique_path(&dir, &name);
                 rec.name = path
@@ -861,7 +861,7 @@ impl Manager {
             } else {
                 Category::Video
             };
-            let dir = self.target_dir(&base_dir, rec.category, settings.organize_by_category);
+            let dir = self.target_dir(&base_dir, rec.category, settings.organize_by_category, settings.skip_other_category_folder);
             std::fs::create_dir_all(&dir).ok();
             rec.dir = dir.to_string_lossy().into_owned();
             rec.name =
@@ -949,10 +949,14 @@ impl Manager {
         Ok(id)
     }
 
-    fn target_dir(&self, base: &str, cat: Category, organize: bool) -> PathBuf {
+    fn target_dir(&self, base: &str, cat: Category, organize: bool, skip_other: bool) -> PathBuf {
         let base = PathBuf::from(base);
         if organize {
-            base.join(category_dir(cat))
+            if skip_other && (cat == Category::Other || cat == Category::Images) {
+                base
+            } else {
+                base.join(category_dir(cat))
+            }
         } else {
             base
         }

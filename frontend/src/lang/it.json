@@ -722,12 +722,12 @@
   "Partly scanned": "Analizzato in parte",
   "The file is larger than the {limit} MB upload limit and the cloud does not know its fingerprint, so it was not uploaded.": "Il file supera il limite di caricamento di {limit} MB e il cloud non conosce la sua impronta, quindi non è stato caricato.",
   "Show the download icon in fullscreen videos": "Mostra l’icona di download nei video a schermo intero",
-  "On by default. When a video plays in fullscreen, the browser extension shows a small download icon in the top-left corner. Its \u00d7 button hides it on that page only; turn this off to hide it everywhere.": "Attivo per impostazione predefinita. Quando un video è a schermo intero, l’estensione del browser mostra una piccola icona di download in alto a sinistra. Il suo pulsante × la nasconde solo in quella pagina; disattiva questa opzione per nasconderla ovunque.",
+  "On by default. When a video plays in fullscreen, the browser extension shows a small download icon in the top-left corner. Its × button hides it on that page only; turn this off to hide it everywhere.": "Attivo per impostazione predefinita. Quando un video è a schermo intero, l’estensione del browser mostra una piccola icona di download in alto a sinistra. Il suo pulsante × la nasconde solo in quella pagina; disattiva questa opzione per nasconderla ovunque.",
   "Installing Deno": "Installazione di Deno",
   "Extracting Deno": "Estrazione di Deno",
   "Deno installed": "Deno installato",
   "Deno (YouTube challenges)": "Deno (verifiche di YouTube)",
-  "not installed \u2014 installed with the first YouTube video, needed for full YouTube speed": "non installato — viene installato con il primo video di YouTube, necessario per la piena velocità di YouTube",
+  "not installed — installed with the first YouTube video, needed for full YouTube speed": "non installato — viene installato con il primo video di YouTube, necessario per la piena velocità di YouTube",
   "Adding metadata": "Aggiunta dei metadati",
   "Adding the thumbnail": "Aggiunta della miniatura",
   "Finishing": "Completamento",
@@ -752,5 +752,6 @@
   "Audio only (WAV)": "Solo audio (WAV)",
   "Audio only (ALAC)": "Solo audio (ALAC)",
   "Video format": "Formato video",
-  "MP4 (H.264, plays everywhere)": "MP4 (H.264, si riproduce ovunque)"
+  "MP4 (H.264, plays everywhere)": "MP4 (H.264, si riproduce ovunque)",
+  "Do not create subfolder for Other category, save uncategorized files directly to downloads folder": "Non creare una sottocartella per la categoria Altro, salvare i file senza categoria direttamente nella cartella di download"
 }

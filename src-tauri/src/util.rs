@@ -123,7 +123,8 @@ pub fn category_for(name: &str) -> Category {
         | "ods" | "rtf" | "csv" | "md" => Category::Documents,
         "zip" | "rar" | "7z" | "tar" | "gz" | "xz" | "bz2" | "zst" | "iso" | "dmg" | "img"
         | "tgz" => Category::Archives,
-        "exe" | "msi" | "apk" | "deb" | "rpm" | "appimage" | "pkg" | "msix" | "flatpak" => {
+        "exe" | "msi" | "apk" | "deb" | "rpm" | "appimage" | "pkg" | "msix" | "flatpak"
+        | "bat" | "cmd" | "ps1" | "vbs" | "reg" => {
             Category::Programs
         }
         "png" | "jpg" | "jpeg" | "gif" | "webp" | "bmp" | "svg" | "heic" | "avif" => {

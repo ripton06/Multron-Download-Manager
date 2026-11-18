@@ -65,7 +65,7 @@
   }
 
   const QUALITIES = [
-    ['best', 'Best quality'],
+    ['best', 'Лучшее качество'],
     ['6480', '12K'],
     ['4320', '8K'],
     ['2880', '5K'],
@@ -77,14 +77,14 @@
     ['360', '360p'],
     ['240', '240p'],
     ['144', '144p'],
-    ['audio-mp3', 'Audio (MP3)'],
-    ['audio-m4a', 'Audio (M4A)'],
-    ['audio-aac', 'Audio (AAC)'],
-    ['audio-opus', 'Audio (Opus)'],
-    ['audio-vorbis', 'Audio (OGG Vorbis)'],
-    ['audio-flac', 'Audio (FLAC)'],
-    ['audio-wav', 'Audio (WAV)'],
-    ['audio-alac', 'Audio (ALAC)']
+    ['audio-mp3', 'Аудио (MP3)'],
+    ['audio-m4a', 'Аудио (M4A)'],
+    ['audio-aac', 'Аудио (AAC)'],
+    ['audio-opus', 'Аудио (Opus)'],
+    ['audio-vorbis', 'Аудио (OGG Vorbis)'],
+    ['audio-flac', 'Аудио (FLAC)'],
+    ['audio-wav', 'Аудио (WAV)'],
+    ['audio-alac', 'Аудио (ALAC)']
   ];
 
   function meta(name) {
@@ -104,7 +104,7 @@
 
   async function send(payload) {
     const ok = await chrome.runtime.sendMessage({ type: 'download', payload });
-    toast(ok ? 'Sent to Multron Download Manager' : 'Multron Download Manager did not accept the download', !!ok);
+    toast(ok ? 'Отправлено в Multron' : 'Multron не принял загрузку', !!ok);
   }
 
   const REDDIT_PLAYER = 'shreddit-player, shreddit-player-2';
@@ -139,7 +139,7 @@
   function redditCommentName(comment) {
     const author = comment.getAttribute('author');
     const body = text(comment.querySelector('[slot="comment"], .md')).slice(0, 60);
-    const who = author ? `u/${author}` : 'comment';
+    const who = author ? `u/${author}` : 'комментарий';
     return body ? `${who}: ${body}` : `Reddit ${who}`;
   }
 
@@ -153,7 +153,7 @@
         ? (() => {
             const author = comment.getAttribute('data-author');
             const body = text(comment.querySelector('.usertext-body .md')).slice(0, 60);
-            return (author ? `u/${author}` : 'comment') + (body ? `: ${body}` : '');
+            return (author ? `u/${author}` : 'комментарий') + (body ? `: ${body}` : '');
           })()
         : redditCommentName(comment);
       const label = `${post} — ${name}`;
@@ -318,7 +318,7 @@
     if (page) return page;
     const file = nameFromUrl(item?.url) || nameFromUrl(location.href);
     if (file) return file;
-    return pageName() || host + ' ' + fallbackKind;
+    return pageName() || host + ' — ' + (fallbackKind === 'file' ? 'файл' : 'видео');
   }
 
   function youtubeItem(el) {
@@ -444,7 +444,7 @@
     '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0l-5-5m5 5l5-5M5 20h14"/></svg>';
 
   const FORMATS = [
-    ['default', 'Default'],
+    ['default', 'По умолчанию'],
     ['mp4', 'MP4'],
     ['mp4-h264', 'MP4 H.264'],
     ['mkv', 'MKV'],
@@ -472,10 +472,10 @@
       chip.textContent = label;
       chip.title =
         id === 'default'
-          ? 'Use the video format set in Multron Download Manager'
+          ? 'Использовать формат видео, заданный в Multron'
           : id === 'mp4-h264'
-            ? 'MP4 with H.264 and AAC: plays everywhere, also in WhatsApp and on older phones and TVs (up to 1080p on YouTube)'
-            : `Save videos as ${label}`;
+            ? 'MP4 с H.264 и AAC: совместим с WhatsApp, старыми телефонами и телевизорами (на YouTube — до 1080p)'
+            : `Сохранять видео в формате ${label}`;
       chip.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -510,7 +510,7 @@
   function sizeText(s) {
     if (!s?.size) return '';
     const gb = s.size / 1073741824;
-    const text = gb >= 1 ? `${gb.toFixed(gb >= 10 ? 0 : 1)} GB` : `${Math.max(0.1, s.size / 1048576).toFixed(1)} MB`;
+    const text = gb >= 1 ? `${gb.toFixed(gb >= 10 ? 0 : 1).replace('.', ',')} ГБ` : `${Math.max(0.1, s.size / 1048576).toFixed(1).replace('.', ',')} МБ`;
     return (s.exact ? '' : '~') + text;
   }
 
@@ -544,7 +544,7 @@
       const url = item?.kind === 'media' ? item.url : null;
       if (!url || sizesFor === url) return;
       sizesFor = url;
-      showStatus('Checking sizes…', true);
+      showStatus('Проверка размеров…', true);
       for (const cell of sizeCells.values()) {
         cell.textContent = '';
         cell.classList.add('loading');
@@ -554,12 +554,12 @@
         .then((sizes) => {
           if (sizesFor !== url) return;
           fill(sizes);
-          showStatus(sizes ? '' : 'Sizes are not available for this video', false);
+          showStatus(sizes ? '' : 'Размеры файлов этого видео недоступны', false);
           if (!sizes) sizesFor = null;
         })
         .catch(() => {
           fill(null);
-          showStatus('Sizes are not available for this video', false);
+          showStatus('Размеры файлов этого видео недоступны', false);
           sizesFor = null;
         });
     };
@@ -595,8 +595,8 @@
     const close = document.createElement('button');
     close.className = 'multron-close';
     close.type = 'button';
-    close.title = 'Hide on this page';
-    close.setAttribute('aria-label', 'Hide on this page');
+    close.title = 'Скрыть на этой странице';
+    close.setAttribute('aria-label', 'Скрыть на этой странице');
     close.textContent = '×';
     close.addEventListener('click', (e) => {
       e.preventDefault();
@@ -617,11 +617,11 @@
     fab = document.createElement('div');
     fab.className = 'multron-fab';
     if (kind === 'media') {
-      fab.appendChild(qualityButton('Multron Download Manager', (q) => sendItem(videoItem(document.body), q), () => videoItem(document.body)));
+      fab.appendChild(qualityButton('Скачать через Multron', (q) => sendItem(videoItem(document.body), q), () => videoItem(document.body)));
     } else {
       const main = document.createElement('button');
       main.className = 'multron-btn';
-      main.innerHTML = `${ICON}<span>Multron Download Manager</span>`;
+      main.innerHTML = `${ICON}<span>Скачать через Multron</span>`;
       main.addEventListener('click', () => send({ url: location.href, kind: 'http', pageTitle: resolveName({ url: location.href }, 'file') }));
       fab.appendChild(main);
     }
@@ -634,7 +634,7 @@
     if (!fab) return;
     const name = fabKind === 'media' ? resolveName(videoItem(document.body)) : resolveName({ url: location.href }, 'file');
     const label = fab.querySelector('.multron-btn span');
-    const wanted = `Download: ${name}`;
+    const wanted = `Скачать: ${name}`;
     if (label && label.textContent !== wanted) {
       label.textContent = wanted;
       label.parentElement.title = name;
@@ -772,20 +772,20 @@
     if (!overlay) {
       overlay = document.createElement('div');
       overlay.className = 'multron-video';
-      overlay.appendChild(qualityButton('Download video', (q) => overlayTarget && sendItem(videoItem(overlayTarget), q), () => overlayTarget && videoItem(overlayTarget)));
+      overlay.appendChild(qualityButton('Скачать видео', (q) => overlayTarget && sendItem(videoItem(overlayTarget), q), () => overlayTarget && videoItem(overlayTarget)));
       overlay.appendChild(closeButton());
       document.documentElement.appendChild(overlay);
       const handle = overlay.querySelector('.multron-btn');
-      handle.title = 'Drag to move · double-click to put it back';
+      handle.title = 'Перетащите для перемещения · двойной щелчок вернёт кнопку на место';
       makeDraggable(handle);
     }
     overlayTarget = target;
     const label = overlay.querySelector('.multron-btn span');
     const name = resolveName(videoItem(target));
-    const wanted = `Download: ${name}`;
+    const wanted = `Скачать: ${name}`;
     if (label && label.textContent !== wanted) {
       label.textContent = wanted;
-      label.parentElement.title = `${name}\nDrag to move · double-click to put it back`;
+      label.parentElement.title = `${name}\nПеретащите для перемещения · двойной щелчок вернёт кнопку на место`;
     }
     placeOverlay();
   }
@@ -829,13 +829,13 @@
       mini.className = 'multron-mini';
       mini.appendChild(qualityButton('', (q) => miniTarget && sendItem(videoItem(miniTarget), q), () => miniTarget && videoItem(miniTarget)));
       const button = mini.querySelector('.multron-btn');
-      button.title = 'Download with Multron Download Manager';
-      button.setAttribute('aria-label', 'Download with Multron Download Manager');
+      button.title = 'Скачать через Multron';
+      button.setAttribute('aria-label', 'Скачать через Multron');
       const close = document.createElement('button');
       close.className = 'multron-mini-close';
       close.type = 'button';
-      close.title = 'Hide in fullscreen on this page (turn it off everywhere in Multron Download Manager: Settings → Browser Integration)';
-      close.setAttribute('aria-label', 'Hide in fullscreen on this page');
+      close.title = 'Скрыть в полноэкранном режиме на этой странице (отключить на всех сайтах можно в Multron: Настройки → Интеграция с браузером)';
+      close.setAttribute('aria-label', 'Скрыть в полноэкранном режиме на этой странице');
       close.textContent = '×';
       close.addEventListener('click', (e) => {
         e.preventDefault();
@@ -917,7 +917,7 @@
     if (on('reddit.com')) {
       for (const post of document.querySelectorAll('shreddit-post')) {
         if (post.hasAttribute('promoted') || post.closest('shreddit-ad-post')) continue;
-        const title = post.getAttribute('post-title') || 'Reddit post';
+        const title = post.getAttribute('post-title') || 'Публикация Reddit';
         const type = post.getAttribute('post-type');
         const player = redditPlayerItem(post.querySelector(REDDIT_PLAYER));
         if (player) add(player);
@@ -961,7 +961,7 @@
       for (const article of document.querySelectorAll('article')) {
         const link = article.querySelector('a[href*="/status/"]:has(time)') || article.querySelector('a[href*="/status/"]');
         const url = link && absolute(link.getAttribute('href'))?.href;
-        const name = text(article.querySelector('[data-testid="tweetText"]')).slice(0, 120) || 'Post';
+        const name = text(article.querySelector('[data-testid="tweetText"]')).slice(0, 120) || 'Публикация';
         if (url && article.querySelector('[data-testid="videoPlayer"], video')) add({ url, kind: 'media', mediaType: 'video', name });
         for (const img of article.querySelectorAll('img[src*="pbs.twimg.com/media"]')) {
           add({ url: fullSize(img.src), kind: 'auto', mediaType: 'image', name, thumbnail: img.src });
@@ -1000,7 +1000,7 @@
     if (on('facebook.com')) {
       for (const a of document.querySelectorAll('a[href*="/videos/"], a[href*="/reel/"], a[href*="/watch/?v="]')) {
         const u = absolute(a.getAttribute('href'));
-        if (u) add({ url: u.href.split('&')[0], kind: 'media', mediaType: 'video', name: text(a) || 'Facebook video' });
+        if (u) add({ url: u.href.split('&')[0], kind: 'media', mediaType: 'video', name: text(a) || 'Видео Facebook' });
       }
     }
   }
@@ -1027,7 +1027,7 @@
       else if (FILE_EXT.test(p) || a.hasAttribute('download')) add({ url: u.href, kind: /\.torrent$/i.test(p) ? 'torrent' : 'auto', mediaType: 'file', name: a.getAttribute('download') || fileName(u.href) });
     }
     for (const a of document.querySelectorAll('a[href^="magnet:"]')) {
-      add({ url: a.href, kind: 'torrent', mediaType: 'file', name: text(a) || 'Magnet link' });
+      add({ url: a.href, kind: 'torrent', mediaType: 'file', name: text(a) || 'Magnet-ссылка' });
     }
     if (on('reddit.com', 'instagram.com', 'x.com', 'twitter.com', 'youtube.com', 'tiktok.com')) return;
     for (const img of document.querySelectorAll('img')) {
@@ -1107,7 +1107,7 @@
               type: 'link-download',
               payload: { url: a.href, kind: 'auto', filename: a.getAttribute('download') || null, pageTitle: document.title }
             })
-            .then((r) => toast(r === 'browser' ? 'Multron Download Manager is not running: downloading in the browser' : r ? 'Sent to Multron Download Manager' : 'Multron Download Manager did not accept the download', !!r));
+            .then((r) => toast(r === 'browser' ? 'Multron не запущен: файл скачивается в браузере' : r ? 'Отправлено в Multron' : 'Multron не принял загрузку', !!r));
         },
         true
       );

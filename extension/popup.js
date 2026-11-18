@@ -14,15 +14,15 @@ async function refreshStatus(force = false) {
   dot.className = 'dot';
   if (!info) {
     dot.classList.add('bad');
-    $('status-text').textContent = 'App not running';
+    $('status-text').textContent = 'Приложение не запущено';
     $('connect').hidden = true;
   } else if (!info.paired) {
     dot.classList.add('warn');
-    $('status-text').textContent = `Not approved · v${info.version}`;
+    $('status-text').textContent = `Ожидает подтверждения · v${info.version}`;
     $('connect').hidden = false;
   } else {
     dot.classList.add('ok');
-    $('status-text').textContent = `Connected · v${info.version}`;
+    $('status-text').textContent = `Подключено · v${info.version}`;
     $('connect').hidden = true;
   }
   return info;
@@ -31,7 +31,7 @@ async function refreshStatus(force = false) {
 function sizeText(s) {
   if (!s?.size) return '';
   const gb = s.size / 1073741824;
-  const text = gb >= 1 ? `${gb.toFixed(gb >= 10 ? 0 : 1)} GB` : `${Math.max(0.1, s.size / 1048576).toFixed(1)} MB`;
+  const text = gb >= 1 ? `${gb.toFixed(gb >= 10 ? 0 : 1).replace('.', ',')} ГБ` : `${Math.max(0.1, s.size / 1048576).toFixed(1).replace('.', ',')} МБ`;
   return (s.exact ? '' : '~') + text;
 }
 
@@ -41,14 +41,14 @@ async function showSizes(url) {
   const status = $('size-status');
   status.hidden = false;
   status.classList.add('busy');
-  status.textContent = 'Checking sizes…';
+  status.textContent = 'Проверка размеров…';
   const sizes = await chrome.runtime.sendMessage({ type: 'sizes', url }).catch(() => null);
   options.forEach((o, i) => {
     const size = sizeText(sizes?.[o.value]);
     o.textContent = size ? `${names[i]} · ${size}` : names[i];
   });
   status.classList.remove('busy');
-  status.textContent = sizes ? '' : 'Sizes are not available for this page';
+  status.textContent = sizes ? '' : 'Размеры файлов на этой странице недоступны';
   status.hidden = !!sizes;
 }
 
@@ -67,12 +67,14 @@ async function loadOptions() {
   }
   $('skipDomains').value = s.skipDomains;
   $('skipDomains').addEventListener('change', () => chrome.storage.local.set({ skipDomains: $('skipDomains').value }));
+  $('skipExtensions').value = s.skipExtensions || '';
+  $('skipExtensions').addEventListener('change', () => chrome.storage.local.set({ skipExtensions: $('skipExtensions').value }));
 }
 
 async function sendDownload(payload) {
-  msg('Sending…');
+  msg('Отправка…');
   const ok = await chrome.runtime.sendMessage({ type: 'download', payload });
-  msg(ok ? 'Sent to Multron Download Manager ✓' : 'Multron Download Manager did not accept it — check the app.');
+  msg(ok ? 'Отправлено в Multron ✓' : 'Multron не принял загрузку. Проверьте приложение.');
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -88,12 +90,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   if (MEDIA.test(host)) {
     $('page-box').hidden = false;
-    $('page-label').textContent = tab.title || 'This page';
+    $('page-label').textContent = tab.title || 'Текущая страница';
     showSizes(tab.url);
   } else if (FILES.test(host)) {
     $('page-box').hidden = false;
     $('quality').hidden = true;
-    $('page-label').textContent = 'File on this page';
+    $('page-label').textContent = 'Файл на этой странице';
   }
 
   $('container').closest('.format-row').hidden = !MEDIA.test(host);
@@ -118,15 +120,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!tab?.id) return;
     const pages = Number($('grab-pages').value) || 0;
     $('grab').disabled = true;
-    msg(pages ? 'Scrolling and collecting…' : 'Collecting…');
+    msg(pages ? 'Прокрутка и сбор ссылок…' : 'Сбор ссылок…');
     const r = await chrome.runtime.sendMessage({ type: 'grab-page', tabId: tab.id, pages });
     $('grab').disabled = false;
-    msg(r?.ok ? `Found ${r.count} items. Pick them in Multron.` : r?.error ?? 'Something went wrong.');
+    msg(r?.ok ? `Найдено объектов: ${r.count}. Выберите нужные в Multron.` : r?.error ?? 'Произошла ошибка.');
   });
 
   $('send-link').addEventListener('click', () => {
     const url = $('link').value.trim();
-    if (!/^(https?:\/\/|magnet:)/i.test(url)) return msg('Enter an http(s) or magnet link.');
+    if (!/^(https?:\/\/|magnet:)/i.test(url)) return msg('Введите ссылку HTTP(S) или magnet-ссылку.');
     sendDownload({ url, kind: 'auto', referrer: tab?.url ?? null });
   });
   $('link').addEventListener('keydown', (e) => e.key === 'Enter' && $('send-link').click());
@@ -137,12 +139,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   $('grant').addEventListener('click', async () => {
     const ok = await chrome.permissions.request(ALL_SITES).catch(() => false);
     $('perm-box').hidden = ok;
-    msg(ok ? 'Access granted. Reload the page to see the button.' : 'Access was not granted.');
+    msg(ok ? 'Доступ разрешён. Обновите страницу, чтобы появилась кнопка.' : 'Доступ не разрешён.');
   });
 
   $('connect').addEventListener('click', async () => {
     const r = await chrome.runtime.sendMessage({ type: 'pair' });
-    msg(r?.paired ? 'Connected ✓' : 'Approve the request in the Multron Download Manager window.');
+    msg(r?.paired ? 'Подключено ✓' : 'Подтвердите запрос в окне Multron.');
     setTimeout(() => refreshStatus(true), 1500);
   });
 });

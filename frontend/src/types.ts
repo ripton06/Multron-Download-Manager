@@ -85,6 +85,7 @@ export interface Settings {
   transparencyLevel: number;
   downloadDir: string;
   organizeByCategory: boolean;
+  skipOtherCategoryFolder: boolean;
   closeToTray: boolean;
   startMinimized: boolean;
   launchAtStartup: boolean;

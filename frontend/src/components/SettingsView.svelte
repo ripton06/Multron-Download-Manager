@@ -466,6 +466,16 @@
               <button class="btn" onclick={browseDir}><Icon name="folder" size={13} />{t('Browse')}</button>
             </div>
             {@render toggle('Sort into category folders', 'Video, Music, Documents, Archives, Programs, Images and Other sub-folders.', draft.organizeByCategory, (v) => (draft!.organizeByCategory = v))}
+            {#if draft.organizeByCategory}
+              <div class="mt-2 pl-4 border-l-2 border-line">
+                {@render toggle(
+                  'Do not create subfolder for Other category, save uncategorized files directly to downloads folder',
+                  '',
+                  draft.skipOtherCategoryFolder,
+                  (v) => (draft!.skipOtherCategoryFolder = v)
+                )}
+              </div>
+            {/if}
           {:else if current.id === 'connection'}
             {@render row('Connections per download', 'Each download is split into this many parallel connections (default 8). Idle connections take over the slowest ranges so the line stays saturated until the end. You can also change it per download while it runs.')}
             <div class="flex items-center gap-3 mt-2">
