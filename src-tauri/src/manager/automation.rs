@@ -362,8 +362,15 @@ impl Manager {
         }
     }
 
-    pub fn stream_token(&self, hash: &str, file: usize) -> String {
-        self.auto.lock().stream_tokens.token(hash, file)
+    pub fn stream_generation(&self) -> u64 {
+        self.auto.lock().stream_tokens.generation()
+    }
+
+    pub fn stream_token(&self, hash: &str, file: usize, generation: u64) -> Option<String> {
+        self.auto
+            .lock()
+            .stream_tokens
+            .token_at_generation(hash, file, generation)
     }
 
     pub fn stream_cancellation(

@@ -12,6 +12,7 @@ use crate::model::TorrentOptions;
 #[derive(Default)]
 pub struct StreamTokens {
     files: HashMap<(String, usize), StreamPermit>,
+    generation: u64,
 }
 
 struct StreamPermit {
@@ -20,7 +21,21 @@ struct StreamPermit {
 }
 
 impl StreamTokens {
+    pub fn generation(&self) -> u64 {
+        self.generation
+    }
+
+    pub fn token_at_generation(
+        &mut self,
+        hash: &str,
+        file: usize,
+        generation: u64,
+    ) -> Option<String> {
+        (self.generation == generation).then(|| self.token(hash, file))
+    }
+
     pub fn retain_files(&mut self, hash: &str, files: &[usize]) {
+        self.generation = self.generation.wrapping_add(1);
         self.files.retain(|(existing, index), permit| {
             let keep = existing != hash || files.contains(index);
             if !keep {
@@ -226,6 +241,25 @@ mod tests {
         let new = tokens.token("hash", 0);
         assert_ne!(old, new);
         assert!(!tokens.allows(&old, "hash", 0));
+    }
+
+    #[test]
+    fn a_revocation_between_validation_and_issuance_cannot_create_a_fresh_grant() {
+        let mut tokens = StreamTokens::default();
+        let generation = tokens.generation();
+        let mut torrent = TorrentOptions::default();
+        torrent.info_hash = Some("a".repeat(40));
+        torrent.files.push(crate::model::TorrentFile {
+            name: "video.mp4".into(),
+            length: 20,
+            included: true,
+        });
+        let (hash, _) = stream_file(&torrent, 0).unwrap();
+        tokens.retain_files(&hash, &[]);
+        assert!(tokens.token_at_generation(&hash, 0, generation).is_none());
+        assert!(tokens
+            .token_at_generation(&hash, 0, tokens.generation())
+            .is_some());
     }
 
     #[tokio::test]

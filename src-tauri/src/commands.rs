@@ -662,16 +662,19 @@ fn torrent_playback(mgr: &Manager, id: &str, file: usize) -> R<(String, String)>
     if !bridge.running {
         return Err("turn on the browser bridge (Settings → Browser Integration) to play files while they download".into());
     }
+    let generation = mgr.stream_generation();
     let torrent = mgr
         .record(id)
         .map_err(anyhow_err)?
         .torrent
         .ok_or("not a torrent")?;
     let (hash, title) = crate::playback::stream_file(&torrent, file).map_err(anyhow_err)?;
+    let token = mgr
+        .stream_token(&hash, file, generation)
+        .ok_or("the file selection changed; try playback again")?;
     let url = format!(
         "http://127.0.0.1:{}/stream/{}/{hash}/{file}",
-        bridge.port,
-        mgr.stream_token(&hash, file)
+        bridge.port, token
     );
     Ok((url, title))
 }
