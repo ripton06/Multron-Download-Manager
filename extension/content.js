@@ -84,20 +84,9 @@
 
   const THEME_ATTR = 'data-multron-theme';
   const systemTheme = window.matchMedia('(prefers-color-scheme: light)');
-  let themeState = { ...MultronTheme.defaults };
-  function applyTheme(settings) {
-    themeState = { ...themeState, ...settings };
-    document.documentElement.setAttribute(THEME_ATTR, MultronTheme.resolve(themeState, systemTheme.matches));
-  }
-  chrome.storage.local.get(MultronTheme.defaults).then(applyTheme).catch(() => applyTheme(MultronTheme.defaults));
-  chrome.storage.onChanged.addListener((changes, area) => {
-    if (area !== 'local' || (!changes.uiTheme && !changes.themeMode)) return;
-    const update = {};
-    if (changes.uiTheme) update.uiTheme = changes.uiTheme.newValue;
-    if (changes.themeMode) update.themeMode = changes.themeMode.newValue;
-    applyTheme(update);
+  MultronTheme.bind(chrome.storage, systemTheme, (theme) => {
+    document.documentElement.setAttribute(THEME_ATTR, theme);
   });
-  systemTheme.addEventListener('change', () => applyTheme({}));
 
   chrome.storage.local.get({ uiMessages: null }).then(({ uiMessages: m }) => {
     if (m && typeof m === 'object') {

@@ -3,32 +3,87 @@ use std::io::Write;
 use std::path::{Path, PathBuf};
 
 use anyhow::{bail, Result};
+use futures_util::{Stream, StreamExt};
+use tokio::io::AsyncRead;
+use tokio_util::sync::CancellationToken;
 
 use crate::model::TorrentOptions;
 
 #[derive(Default)]
 pub struct StreamTokens {
-    files: HashMap<(String, usize), String>,
+    files: HashMap<(String, usize), StreamPermit>,
+}
+
+struct StreamPermit {
+    token: String,
+    cancel: CancellationToken,
 }
 
 impl StreamTokens {
     pub fn retain_files(&mut self, hash: &str, files: &[usize]) {
-        self.files
-            .retain(|(existing, index), _| existing != hash || files.contains(index));
+        self.files.retain(|(existing, index), permit| {
+            let keep = existing != hash || files.contains(index);
+            if !keep {
+                permit.cancel.cancel();
+            }
+            keep
+        });
     }
 
     pub fn token(&mut self, hash: &str, file: usize) -> String {
         self.files
             .entry((hash.to_owned(), file))
-            .or_insert_with(|| uuid::Uuid::new_v4().simple().to_string())
+            .or_insert_with(|| StreamPermit {
+                token: uuid::Uuid::new_v4().simple().to_string(),
+                cancel: CancellationToken::new(),
+            })
+            .token
             .clone()
     }
 
     pub fn allows(&self, token: &str, hash: &str, file: usize) -> bool {
         self.files
             .get(&(hash.to_owned(), file))
-            .is_some_and(|expected| expected == token)
+            .is_some_and(|expected| expected.token == token && !expected.cancel.is_cancelled())
     }
+
+    pub fn cancellation(&self, token: &str, hash: &str, file: usize) -> Option<CancellationToken> {
+        self.allows(token, hash, file)
+            .then(|| self.files[&(hash.to_owned(), file)].cancel.clone())
+    }
+}
+
+pub fn reader_stream<R: AsyncRead + Unpin + Send + 'static>(
+    reader: R,
+    cancel: CancellationToken,
+) -> impl Stream<Item = std::io::Result<bytes::Bytes>> {
+    let (sender, receiver) = tokio::sync::mpsc::channel(2);
+    tokio::spawn(async move {
+        let mut reader = tokio_util::io::ReaderStream::new(reader);
+        loop {
+            let next = tokio::select! {
+                biased;
+                _ = cancel.cancelled() => break,
+                _ = sender.closed() => break,
+                next = reader.next() => next,
+            };
+            let Some(next) = next else {
+                break;
+            };
+            let failed = next.is_err();
+            let sent = tokio::select! {
+                biased;
+                _ = cancel.cancelled() => false,
+                sent = sender.send(next) => sent.is_ok(),
+            };
+            if !sent || failed {
+                break;
+            }
+        }
+    });
+    futures_util::stream::unfold(receiver, |mut receiver| async move {
+        receiver.recv().await.map(|next| (next, receiver))
+    })
 }
 
 pub fn log_path(path: &str) -> &str {
@@ -161,6 +216,160 @@ mod tests {
         assert!(!tokens.allows(&removed, "hash", 0));
         assert!(tokens.allows(&kept, "hash", 1));
         assert!(tokens.allows(&other, "other", 0));
+    }
+
+    #[test]
+    fn removing_and_readding_a_torrent_does_not_restore_old_links() {
+        let mut tokens = StreamTokens::default();
+        let old = tokens.token("hash", 0);
+        tokens.retain_files("hash", &[]);
+        let new = tokens.token("hash", 0);
+        assert_ne!(old, new);
+        assert!(!tokens.allows(&old, "hash", 0));
+    }
+
+    #[tokio::test]
+    async fn reader_stream_yields_already_buffered_bytes() {
+        use tokio::io::AsyncWriteExt;
+        let (reader, mut writer) = tokio::io::duplex(64);
+        writer.write_all(b"ready").await.unwrap();
+        let stream = reader_stream(reader, CancellationToken::new());
+        futures_util::pin_mut!(stream);
+        let chunk = tokio::time::timeout(std::time::Duration::from_secs(1), stream.next())
+            .await
+            .unwrap()
+            .unwrap()
+            .unwrap();
+        assert_eq!(chunk.as_ref(), b"ready");
+    }
+
+    #[tokio::test]
+    async fn revocation_closes_an_http_response_waiting_for_more_bytes() {
+        use axum::{
+            body::Body,
+            http::{Response, StatusCode},
+            routing::get,
+            Router,
+        };
+        use std::sync::Arc;
+        use tokio::io::AsyncWriteExt;
+        let mut tokens = StreamTokens::default();
+        let token = tokens.token("hash", 0);
+        let cancel = tokens.cancellation(&token, "hash", 0).unwrap();
+        let tokens = Arc::new(parking_lot::Mutex::new(tokens));
+        let (reader, mut writer) = tokio::io::duplex(16384);
+        writer.write_all(&vec![7; 8192]).await.unwrap();
+        let reader = Arc::new(parking_lot::Mutex::new(Some(reader)));
+        let permit = tokens.clone();
+        let app = Router::new().route(
+            "/",
+            get(move || {
+                let reader = reader.clone();
+                let permit = permit.clone();
+                let token = token.clone();
+                let cancel = cancel.clone();
+                async move {
+                    if !permit.lock().allows(&token, "hash", 0) {
+                        return Response::builder()
+                            .status(StatusCode::NOT_FOUND)
+                            .body(Body::empty())
+                            .unwrap();
+                    }
+                    let reader = reader.lock().take().unwrap();
+                    Response::builder()
+                        .header("content-length", "16384")
+                        .body(Body::from_stream(reader_stream(reader, cancel)))
+                        .unwrap()
+                }
+            }),
+        );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let url = format!("http://{}/", listener.local_addr().unwrap());
+        let server = tokio::spawn(async move {
+            axum::serve(listener, app).await.unwrap();
+        });
+        let client = reqwest::Client::builder()
+            .no_proxy()
+            .timeout(std::time::Duration::from_secs(3))
+            .build()
+            .unwrap();
+        let mut response = client.get(&url).send().await.unwrap();
+        assert_eq!(response.status(), StatusCode::OK);
+        tokens.lock().retain_files("hash", &[]);
+        let received = tokio::time::timeout(std::time::Duration::from_secs(1), async {
+            let mut received = 0;
+            while let Ok(Some(chunk)) = response.chunk().await {
+                received += chunk.len();
+            }
+            received
+        })
+        .await
+        .expect("revocation must terminate the pending HTTP body");
+        assert!(received < 16384);
+        assert!(writer.write_all(b"more").await.is_err());
+        assert_eq!(
+            client.get(&url).send().await.unwrap().status(),
+            StatusCode::NOT_FOUND
+        );
+        server.abort();
+    }
+
+    #[tokio::test]
+    async fn revocation_drops_the_reader_even_with_a_stalled_http_consumer() {
+        use std::{
+            pin::Pin,
+            sync::{
+                atomic::{AtomicUsize, Ordering},
+                Arc,
+            },
+            task::{Context, Poll},
+        };
+        use tokio::io::ReadBuf;
+        struct Watched {
+            bytes: std::io::Cursor<Vec<u8>>,
+            reads: Arc<AtomicUsize>,
+            full: Arc<tokio::sync::Notify>,
+            dropped: Arc<tokio::sync::Notify>,
+        }
+        impl AsyncRead for Watched {
+            fn poll_read(
+                mut self: Pin<&mut Self>,
+                cx: &mut Context<'_>,
+                buf: &mut ReadBuf<'_>,
+            ) -> Poll<std::io::Result<()>> {
+                let before = buf.filled().len();
+                let result = Pin::new(&mut self.bytes).poll_read(cx, buf);
+                if buf.filled().len() > before && self.reads.fetch_add(1, Ordering::Relaxed) >= 2 {
+                    self.full.notify_one();
+                }
+                result
+            }
+        }
+        impl Drop for Watched {
+            fn drop(&mut self) {
+                self.dropped.notify_one();
+            }
+        }
+        let full = Arc::new(tokio::sync::Notify::new());
+        let dropped = Arc::new(tokio::sync::Notify::new());
+        let cancel = CancellationToken::new();
+        let stream = reader_stream(
+            Watched {
+                bytes: std::io::Cursor::new(vec![1; 65536]),
+                reads: Arc::new(AtomicUsize::new(0)),
+                full: full.clone(),
+                dropped: dropped.clone(),
+            },
+            cancel.clone(),
+        );
+        tokio::time::timeout(std::time::Duration::from_secs(3), full.notified())
+            .await
+            .unwrap();
+        cancel.cancel();
+        tokio::time::timeout(std::time::Duration::from_secs(3), dropped.notified())
+            .await
+            .expect("cancellation must drop the reader without polling the HTTP body");
+        drop(stream);
     }
 
     #[test]

@@ -366,8 +366,16 @@ impl Manager {
         self.auto.lock().stream_tokens.token(hash, file)
     }
 
-    pub fn permits_stream(&self, token: &str, hash: &str, file: usize) -> bool {
-        self.auto.lock().stream_tokens.allows(token, hash, file)
+    pub fn stream_cancellation(
+        &self,
+        token: &str,
+        hash: &str,
+        file: usize,
+    ) -> Option<tokio_util::sync::CancellationToken> {
+        self.auto
+            .lock()
+            .stream_tokens
+            .cancellation(token, hash, file)
     }
 
     pub(super) fn reset_applied_limits(&self) {

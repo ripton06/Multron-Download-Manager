@@ -15,7 +15,11 @@ Development branch: `codex/rutor-stream-playlists`.
 
 ## Implementation and verification
 
-Implementation is in progress. RuTor uses its public HTTP search page and bounded HTML parsing, with existing result/download UI. Playback URLs authorize a single torrent file for this app session; request logs redact their tokens. Playlist destinations are generated in the app cache or explicitly selected by the user.
+RuTor uses its public HTTP search page and bounded HTML parsing, with existing result/download UI. Provider redirects are validated before following each hop. Playback URLs authorize a single torrent file for this app session; request logs redact their tokens. Deselection and removal revoke permissions and cancel active readers, including when a player stops consuming the HTTP response. Playlist destinations are generated in the app cache or explicitly selected by the user.
+
+Copy Stream URL is available for any included torrent file. Play/save actions cover the common audio/video formats, including MPEG, M2TS, VOB and WMA. A playlist association or a player that can open network streams is required for playback. Cached/exported URLs stop working when this app exits or access to the file is revoked.
+
+The extension keeps its chosen theme mode separately from the cached desktop theme, defaults to following Multron, and updates open popups/overlays when the OS theme changes. Shared binding code handles initialization, storage changes and live system changes. A portable copy only removes Windows Native Messaging registrations that belong to its own data directory.
 
 Required checks: parser/playlist tests, live public RuTor search, full repository tests and checks, Windows build, and independent theme persistence/OS-change checks. Runtime verification must use a separate portable data directory and app identity so the installed Multron and its downloads continue running.
 

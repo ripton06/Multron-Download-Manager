@@ -124,7 +124,7 @@
     navigator.clipboard.writeText(text).then(() => app.toast('success', t('Copied')));
   }
 
-  const PLAYABLE = /\.(mp4|mkv|webm|avi|mov|m4v|wmv|flv|ts|mp3|flac|m4a|aac|ogg|opus|wav)$/i;
+  const PLAYABLE = /\.(mp4|mkv|webm|avi|mov|m4v|wmv|flv|ts|m2ts|mts|mpg|mpeg|vob|mp3|flac|m4a|aac|ogg|opus|wav|wma|mka|aif|aiff|ape|ac3|dts)$/i;
 
   async function play(index: number) {
     if (playbackBusy) return;
@@ -223,11 +223,15 @@
               </div>
             </td>
             <td>
-              {#if PLAYABLE.test(f.name) && selected.has(f.index)}
+              {#if selected.has(f.index)}
                 <div class="flex items-center gap-1">
+                  {#if PLAYABLE.test(f.name)}
                   <button class="btn !h-[24px]" title={t('Open in system player')} disabled={playbackBusy || selection !== null} onclick={() => play(f.index)}><Icon name="play" size={11} />{t('Play')}</button>
+                  {/if}
                   <button class="icon-btn !w-6 !h-6" title={t('Copy stream URL')} aria-label={t('Copy stream URL')} disabled={playbackBusy || selection !== null} onclick={() => copyStream(f.index)}><Icon name="copy" size={12} /></button>
+                  {#if PLAYABLE.test(f.name)}
                   <button class="icon-btn !w-6 !h-6" title={t('Save M3U playlist')} aria-label={t('Save M3U playlist')} disabled={playbackBusy || selection !== null} onclick={() => savePlaylist(f.index)}><Icon name="file" size={12} /></button>
+                  {/if}
                 </div>
               {/if}
             </td>

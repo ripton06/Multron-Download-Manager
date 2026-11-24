@@ -112,3 +112,16 @@ test('both extension surfaces load the shared helper before their main script', 
   const html = source('popup.html');
   assert.ok(html.indexOf('src="theme.js"') < html.indexOf('src="popup.js"'));
 });
+
+test('a slow initial storage reply cannot overwrite a new user choice', async () => {
+  const context = vm.createContext({});
+  vm.runInContext(source('theme.js'), context);
+  let reply;
+  let latest;
+  const storage = { local: { get: () => new Promise((resolve) => { reply = resolve; }), set: async () => {} }, onChanged: { addListener: () => {} } };
+  const binding = context.MultronTheme.bind(storage, { matches: false, addEventListener: () => {} }, (theme) => { latest = theme; });
+  await binding.setMode('light');
+  reply({ themeMode: 'dark', uiTheme: 'dark' });
+  await Promise.resolve();
+  assert.equal(latest, 'light');
+});

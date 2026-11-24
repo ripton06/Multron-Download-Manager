@@ -196,10 +196,15 @@ async fn stream(
     headers: HeaderMap,
 ) -> Response {
     use tokio::io::{AsyncReadExt, AsyncSeekExt};
-    if !mgr.permits_stream(&token, &hash, file) {
+    let Some(cancel) = mgr.stream_cancellation(&token, &hash, file) else {
         return StatusCode::NOT_FOUND.into_response();
-    }
-    let (mut reader, len, name) = match mgr.open_stream(&hash, file).await {
+    };
+    let opened = tokio::select! {
+        biased;
+        _ = cancel.cancelled() => return StatusCode::NOT_FOUND.into_response(),
+        opened = mgr.open_stream(&hash, file) => opened,
+    };
+    let (mut reader, len, name) = match opened {
         Ok(v) => v,
         Err(e) => return (StatusCode::NOT_FOUND, format!("{e:#}")).into_response(),
     };
@@ -229,11 +234,19 @@ async fn stream(
         }
     }
     let (start, end) = range.unwrap_or((0, len - 1));
-    if start > 0 && reader.seek(std::io::SeekFrom::Start(start)).await.is_err() {
-        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+    if start > 0 {
+        let seek = tokio::select! {
+            biased;
+            _ = cancel.cancelled() => return StatusCode::NOT_FOUND.into_response(),
+            result = reader.seek(std::io::SeekFrom::Start(start)) => result,
+        };
+        if seek.is_err() {
+            return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+        }
     }
-    let body = Body::from_stream(tokio_util::io::ReaderStream::new(
+    let body = Body::from_stream(crate::playback::reader_stream(
         reader.take(end - start + 1),
+        cancel,
     ));
     let mime = mime_guess::from_path(&name)
         .first_or_octet_stream()

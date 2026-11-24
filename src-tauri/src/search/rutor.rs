@@ -4,6 +4,31 @@ use url::Url;
 
 use super::{SearchResult, MAX_RESULTS, RUTOR};
 
+fn redirect_policy() -> reqwest::redirect::Policy {
+    reqwest::redirect::Policy::custom(|attempt| {
+        if attempt.previous().len() >= 5 {
+            attempt.error("RuTor redirected too many times")
+        } else if validate_origin(attempt.url()).is_err() {
+            attempt.error("RuTor redirected to an unsupported address")
+        } else {
+            attempt.follow()
+        }
+    })
+}
+
+pub fn client() -> Result<reqwest::Client> {
+    Ok(reqwest::Client::builder()
+        .user_agent(concat!(
+            "Multron-Download-Manager/",
+            env!("CARGO_PKG_VERSION")
+        ))
+        .connect_timeout(std::time::Duration::from_secs(15))
+        .timeout(super::TIMEOUT)
+        .redirect(redirect_policy())
+        .min_tls_version(reqwest::tls::Version::TLS_1_2)
+        .build()?)
+}
+
 pub fn search_url(template: &str, query: &str) -> String {
     let encoded: String = url::form_urlencoded::byte_serialize(query.trim().as_bytes()).collect();
     template.replace("{query}", &encoded.replace('+', "%20"))
@@ -235,6 +260,39 @@ mod tests {
             search_url("http://rutor.info/search/0/0/100/0/{query}", " кино + / & "),
             "http://rutor.info/search/0/0/100/0/%D0%BA%D0%B8%D0%BD%D0%BE%20%2B%20%2F%20%26"
         );
+    }
+
+    #[tokio::test]
+    async fn unsupported_redirect_is_rejected_before_a_second_request() {
+        use tokio::io::{AsyncReadExt, AsyncWriteExt};
+        let blocked = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let location = format!("http://{}/private", blocked.local_addr().unwrap());
+        let proxy = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let proxy_url = format!("http://{}", proxy.local_addr().unwrap());
+        let response = format!("HTTP/1.1 302 Found\r\nLocation: {location}\r\nContent-Length: 0\r\nConnection: close\r\n\r\n");
+        let server = tokio::spawn(async move {
+            let (mut socket, _) = proxy.accept().await.unwrap();
+            let mut bytes = [0; 4096];
+            socket.read(&mut bytes).await.unwrap();
+            socket.write_all(response.as_bytes()).await.unwrap();
+        });
+        let client = reqwest::Client::builder()
+            .proxy(reqwest::Proxy::all(proxy_url).unwrap())
+            .redirect(redirect_policy())
+            .build()
+            .unwrap();
+        let error = client
+            .get("http://rutor.info/search/0/0/100/0/debian")
+            .send()
+            .await
+            .unwrap_err();
+        assert!(error.is_redirect(), "{error}");
+        assert!(
+            tokio::time::timeout(std::time::Duration::from_millis(50), blocked.accept())
+                .await
+                .is_err()
+        );
+        server.await.unwrap();
     }
 
     #[tokio::test]

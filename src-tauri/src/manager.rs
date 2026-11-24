@@ -3228,6 +3228,7 @@ impl Manager {
         if rec.kind == Kind::Torrent {
             let mut engine_deleted = false;
             if let Some(hash) = rec.torrent.as_ref().and_then(|t| t.info_hash.clone()) {
+                self.auto.lock().stream_tokens.retain_files(&hash, &[]);
                 if let Ok(engine) = self.torrent_engine().await {
                     engine_deleted = engine.remove(&hash, delete_files).await.is_ok();
                 }

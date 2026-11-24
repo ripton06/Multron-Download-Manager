@@ -221,6 +221,13 @@ async fn query_site(
     } else {
         fill(&site.url, query)
     };
+    let provider_client = if site.id == RUTOR {
+        rutor::validate_origin(&url::Url::parse(&request_url)?)?;
+        Some(rutor::client()?)
+    } else {
+        None
+    };
+    let client = provider_client.as_ref().unwrap_or(client);
     let mut resp = client.get(request_url).timeout(TIMEOUT).send().await?;
     let status = resp.status();
     if !status.is_success() {
