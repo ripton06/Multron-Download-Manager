@@ -199,10 +199,10 @@
 
     <div class="flex-1 overflow-y-auto min-h-0">
       {#each outcome?.errors ?? [] as err (err.site)}
-        <div class="mx-5 mt-3 px-3 py-2 rounded-[8px] bg-bad/10 border border-bad/30 text-[11.5px] flex items-center gap-2">
+        <div class="mx-5 mt-3 px-3 py-2 rounded-[8px] bg-bad/10 border border-bad/30 text-[11.5px] flex items-start gap-2">
           <Icon name="alert" size={13} class="text-bad flex-shrink-0" />
-          <span class="font-medium">{siteName[err.site] ?? err.site}</span>
-          <span class="text-muted truncate" title={err.error}>{err.error}</span>
+          <span class="font-medium flex-shrink-0">{siteName[err.site] ?? err.site}</span>
+          <span class="text-muted whitespace-pre-wrap break-words min-w-0 flex-1 select-text" title={err.error}>{err.error}</span>
         </div>
       {/each}
       {#if outcome}

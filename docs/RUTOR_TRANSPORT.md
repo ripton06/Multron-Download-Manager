@@ -1,0 +1,19 @@
+# RuTor search transport
+
+The built-in `rutor` provider keeps `http://rutor.info/search/0/0/100/0/{query}` as its primary endpoint. A real request or response-byte transfer failure permits one additional attempt at `https://new-rutor.org/search/{query}/`.
+
+HTTP status failures, unsupported redirects, response-size limits, invalid UTF-8, missing search layout and successful empty results do not trigger the mirror. Reqwest's internal retry policy is disabled for this provider. Each attempt has a 15-second connect limit and a 20-second total timeout; at most 2 MiB and 100 results are accepted.
+
+The primary and mirror form separate redirect families: `rutor.info`/`www.rutor.info` and `new-rutor.org`/`www.new-rutor.org`. Each target is validated before following it; crossing between families and HTTPS-to-HTTP downgrades are rejected. The mirror accepts HTTPS only. Credentials and non-default ports are rejected. The existing bound of five redirect attempts remains.
+
+When the mirror answers after a primary transport failure, its results retain the single `rutor` provider ID. `SearchOutcome.errors` also keeps the primary error and a notice that the HTTPS mirror supplied results which may be incomplete. If the mirror fails too, both failures remain in the error chain. The mirror's observed maintenance notice means that a partial or empty mirror answer cannot establish that matching torrents do not exist.
+
+A valid magnet remains preferable to a download-only link. Mirror download links must use the exact `/parse/d.rutor.org/download/<topic-id>` path on a known HTTPS mirror host, with an ID matching the selected topic and no query or fragment. Arbitrary proxy targets, credentials, ports and mismatched IDs are rejected. Existing primary download paths are retained.
+
+Regression seams cover real local-proxy request failures, incomplete HTTP bodies, successful empty responses, layout/status/limit failures, cross-family redirects, mirror download-only rows and preservation of both failure causes. In reqwest 0.13, `Response::chunk()` wraps underlying frame errors as decode errors; failures at this response-byte read boundary are classified as transport failures separately from UTF-8 and HTML parsing.
+
+The initial mirror fixture regression failed against the original parser with an unsupported-origin error. After the parser fix, three transport regressions failed against the primary-only seam: real request closure, an incomplete HTTP body, and preservation of the mirror failure. Enabling the bounded fallback made the offline RuTor group pass: 18 passed, 0 failed, 1 ignored, in 0.09 seconds. Full repository checks and the final Windows application build are performed separately by the coordinating task.
+
+The final repository suite passed 262 Rust tests with 14 ignored, and the Windows Lab build completed successfully. During manual acceptance on 25 November, the user confirmed that VPN was disabled and RuTor is unavailable directly from РФ. The Lab screenshot showed the expected primary reset (10054), followed by the HTTPS mirror connect timeout, with both causes selectable in full. A direct CLI mirror request also timed out. This validates fallback and error reporting, but does not establish successful live search under an active VPN. The redundant Cargo live-smoke rebuild was stopped only at its own guard root after that network prerequisite was clarified; other processes were preserved.
+
+This provider uses the desktop application's HTTP transport. It does not acquire another browser's VPN session, cookies or proxy connection. Browser-session transport is outside the approved first-stage implementation; a usable system VPN or proxy route is needed when these endpoints are blocked on the desktop connection. No VPN or browser settings were changed during diagnosis.

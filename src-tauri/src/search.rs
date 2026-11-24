@@ -59,6 +59,11 @@ pub struct SearchOutcome {
     pub errors: Vec<SiteError>,
 }
 
+struct SiteAnswer {
+    results: Vec<SearchResult>,
+    notice: Option<String>,
+}
+
 #[derive(Serialize, Clone, Debug, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct SiteView {
@@ -211,43 +216,18 @@ pub fn parse_feed(site: &str, body: &str) -> Vec<SearchResult> {
         .collect()
 }
 
-async fn query_site(
-    client: &reqwest::Client,
-    site: &SiteView,
-    query: &str,
-) -> Result<Vec<SearchResult>> {
-    let request_url = if site.id == RUTOR {
-        rutor::search_url(&site.url, query)
-    } else {
-        fill(&site.url, query)
-    };
-    let provider_client = if site.id == RUTOR {
-        rutor::validate_origin(&url::Url::parse(&request_url)?)?;
-        Some(rutor::client()?)
-    } else {
-        None
-    };
-    let client = provider_client.as_ref().unwrap_or(client);
-    let mut resp = client.get(request_url).timeout(TIMEOUT).send().await?;
+async fn query_site(client: &reqwest::Client, site: &SiteView, query: &str) -> Result<SiteAnswer> {
+    if site.id == RUTOR {
+        return rutor::search(&site.url, query).await;
+    }
+    let resp = client
+        .get(fill(&site.url, query))
+        .timeout(TIMEOUT)
+        .send()
+        .await?;
     let status = resp.status();
     if !status.is_success() {
         bail!("the site answered HTTP {status}");
-    }
-    if site.id == RUTOR {
-        let final_url = resp.url().clone();
-        rutor::validate_origin(&final_url)?;
-        let limit = 2 * 1024 * 1024;
-        if resp.content_length().is_some_and(|n| n > limit as u64) {
-            bail!("RuTor returned a response that is too large");
-        }
-        let mut bytes = Vec::new();
-        while let Some(chunk) = resp.chunk().await? {
-            if bytes.len() + chunk.len() > limit {
-                bail!("RuTor returned a response that is too large");
-            }
-            bytes.extend_from_slice(&chunk);
-        }
-        return rutor::parse(&String::from_utf8(bytes)?, &final_url);
     }
     let body = resp.text().await?;
     let mut found = match site.id.as_str() {
@@ -262,7 +242,10 @@ async fn query_site(
         }
     };
     found.truncate(MAX_RESULTS);
-    Ok(found)
+    Ok(SiteAnswer {
+        results: found,
+        notice: None,
+    })
 }
 
 pub async fn search(
@@ -283,7 +266,15 @@ pub async fn search(
     let answers = join_all(chosen.iter().map(|site| query_site(client, site, query))).await;
     for (site, answer) in chosen.iter().zip(answers) {
         match answer {
-            Ok(found) => out.results.extend(found),
+            Ok(answer) => {
+                out.results.extend(answer.results);
+                if let Some(error) = answer.notice {
+                    out.errors.push(SiteError {
+                        site: site.id.clone(),
+                        error,
+                    });
+                }
+            }
             Err(e) => out.errors.push(SiteError {
                 site: site.id.clone(),
                 error: format!("{e:#}"),
