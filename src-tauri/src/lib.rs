@@ -21,6 +21,7 @@ mod media;
 mod model;
 pub mod nativehost;
 mod notice;
+mod playback;
 mod portable;
 mod protection;
 mod resolver;
@@ -330,6 +331,8 @@ pub fn run() {
             commands::torrent_export,
             commands::create_torrent,
             commands::torrent_stream_url,
+            commands::torrent_play,
+            commands::torrent_save_playlist,
             commands::rss_feeds,
             commands::rss_refresh,
             commands::rss_download,

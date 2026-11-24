@@ -90,6 +90,13 @@
     <label><input type="checkbox" id="mediaButton" /> <span data-i18n>Show the download button on video pages</span></label>
     <label><input type="checkbox" id="sendCookies" /> <span data-i18n>Send site cookies (private / login-only files)</span></label>
     <div class="grid">
+      <span data-i18n>Extension theme</span>
+      <select id="themeMode">
+        <option value="system" data-i18n>System</option>
+        <option value="light" data-i18n>Light</option>
+        <option value="dark" data-i18n>Dark</option>
+        <option value="multron" selected data-i18n>Follow Multron</option>
+      </select>
       <span data-i18n>Ignore files smaller than (KB)</span><input id="minSizeKB" type="number" min="0" />
       <span data-i18n>Never take over from</span><input id="skipDomains" placeholder="example.com other.org" />
       <span data-i18n>Never take over these file types</span><input id="skipExtensions" placeholder="pdf torrent" />
@@ -98,6 +105,7 @@
   </section>
 
   <footer id="msg"></footer>
+  <script src="theme.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

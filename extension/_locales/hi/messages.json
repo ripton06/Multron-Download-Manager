@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "मीडिया फ़ाइल"
+  },
+  "Copy_stream_URL": {
+    "message": "स्ट्रीम URL कॉपी करें"
+  },
+  "Open_in_system_player": {
+    "message": "डिफ़ॉल्ट प्लेयर में खोलें"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "प्लेलिस्ट डिफ़ॉल्ट प्लेयर में खोलें?"
+  },
+  "Playlist_saved": {
+    "message": "प्लेलिस्ट सहेजी गई"
+  },
+  "Save_M3U_playlist": {
+    "message": "M3U प्लेलिस्ट सहेजें"
+  },
+  "Extension_theme": {
+    "message": "एक्सटेंशन थीम"
+  },
+  "Follow_Multron": {
+    "message": "Multron के अनुसार"
+  },
+  "System": {
+    "message": "सिस्टम"
   }
 }

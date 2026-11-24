@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "メディア ファイル"
+  },
+  "Copy_stream_URL": {
+    "message": "ストリームURLをコピー"
+  },
+  "Open_in_system_player": {
+    "message": "既定のプレーヤーで開く"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "既定のプレーヤーでプレイリストを開きますか？"
+  },
+  "Playlist_saved": {
+    "message": "プレイリストを保存しました"
+  },
+  "Save_M3U_playlist": {
+    "message": "M3Uプレイリストを保存"
+  },
+  "Extension_theme": {
+    "message": "拡張機能のテーマ"
+  },
+  "Follow_Multron": {
+    "message": "Multronに合わせる"
+  },
+  "System": {
+    "message": "システム"
   }
 }

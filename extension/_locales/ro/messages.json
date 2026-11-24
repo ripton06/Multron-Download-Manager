@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "Fișier media"
+  },
+  "Copy_stream_URL": {
+    "message": "Copiază URL-ul fluxului"
+  },
+  "Open_in_system_player": {
+    "message": "Deschide în playerul implicit"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "Deschide lista în playerul implicit?"
+  },
+  "Playlist_saved": {
+    "message": "Listă de redare salvată"
+  },
+  "Save_M3U_playlist": {
+    "message": "Salvează lista M3U"
+  },
+  "Extension_theme": {
+    "message": "Tema extensiei"
+  },
+  "Follow_Multron": {
+    "message": "Urmărește Multron"
+  },
+  "System": {
+    "message": "Sistem"
   }
 }

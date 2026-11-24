@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "Αρχείο πολυμέσων"
+  },
+  "Copy_stream_URL": {
+    "message": "Αντιγραφή URL ροής"
+  },
+  "Open_in_system_player": {
+    "message": "Άνοιγμα στον προεπιλεγμένο αναπαραγωγέα"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "Άνοιγμα της λίστας στον προεπιλεγμένο αναπαραγωγέα;"
+  },
+  "Playlist_saved": {
+    "message": "Η λίστα αναπαραγωγής αποθηκεύτηκε"
+  },
+  "Save_M3U_playlist": {
+    "message": "Αποθήκευση λίστας M3U"
+  },
+  "Extension_theme": {
+    "message": "Θέμα επέκτασης"
+  },
+  "Follow_Multron": {
+    "message": "Όπως το Multron"
+  },
+  "System": {
+    "message": "Σύστημα"
   }
 }

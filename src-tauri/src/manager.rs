@@ -3016,6 +3016,7 @@ impl Manager {
                 e.rec.completed_at = None;
             }
         });
+        self.auto.lock().stream_tokens.retain_files(&hash, &files);
         self.mark_dirty();
         Ok(())
     }

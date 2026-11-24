@@ -20,7 +20,10 @@ pub fn links_in(text: &str) -> Vec<String> {
         } else if lower.starts_with("http://") || lower.starts_with("https://") {
             url::Url::parse(w)
                 .ok()
-                .filter(|u| u.host_str().is_some_and(|h| h.contains('.')))
+                .filter(|u| {
+                    u.host_str().is_some_and(|h| h.contains('.'))
+                        && !crate::playback::is_stream_url(w)
+                })
                 .map(|_| w.to_string())
         } else {
             None
@@ -97,5 +100,18 @@ mod tests {
             ]
         );
         assert!(links_in("just words").is_empty());
+    }
+
+    #[test]
+    fn copied_playback_links_do_not_become_new_downloads() {
+        let stream = format!(
+            "http://127.0.0.1:6801/stream/{}/{}/0",
+            "a".repeat(32),
+            "b".repeat(40)
+        );
+        assert_eq!(
+            links_in(&format!("{stream} https://files.example/file.mp4")),
+            vec!["https://files.example/file.mp4"]
+        );
     }
 }

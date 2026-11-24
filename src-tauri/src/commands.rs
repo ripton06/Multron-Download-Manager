@@ -654,16 +654,50 @@ pub async fn create_torrent(
 
 #[tauri::command]
 pub fn torrent_stream_url(mgr: Mgr<'_>, id: String, file: usize) -> R<String> {
+    torrent_playback(&mgr, &id, file).map(|(url, _)| url)
+}
+
+fn torrent_playback(mgr: &Manager, id: &str, file: usize) -> R<(String, String)> {
     let bridge = mgr.bridge.lock().clone();
     if !bridge.running {
         return Err("turn on the browser bridge (Settings → Browser Integration) to play files while they download".into());
     }
-    let hash = mgr.torrent_hash(&id).map_err(anyhow_err)?;
-    Ok(format!(
+    let torrent = mgr
+        .record(id)
+        .map_err(anyhow_err)?
+        .torrent
+        .ok_or("not a torrent")?;
+    let (hash, title) = crate::playback::stream_file(&torrent, file).map_err(anyhow_err)?;
+    let url = format!(
         "http://127.0.0.1:{}/stream/{}/{hash}/{file}",
         bridge.port,
-        mgr.stream_token()
-    ))
+        mgr.stream_token(&hash, file)
+    );
+    Ok((url, title))
+}
+
+#[tauri::command]
+pub fn torrent_play(
+    app: AppHandle,
+    mgr: Mgr<'_>,
+    id: String,
+    file: usize,
+    confirmed: Option<bool>,
+) -> R<()> {
+    if mgr.settings().ask_before_opening_files && confirmed != Some(true) {
+        return Err(CONFIRM_START.into());
+    }
+    let (url, title) = torrent_playback(&mgr, &id, file)?;
+    let path = crate::playback::save_cached(&mgr.paths.data.join("playlists"), &title, &url)
+        .map_err(anyhow_err)?;
+    app.opener().open_path(path.to_string_lossy(), None::<&str>)
+        .map_err(|_| "No player could open the playlist. Save it and open it in a media player, or copy the stream URL.".to_owned())
+}
+
+#[tauri::command]
+pub fn torrent_save_playlist(mgr: Mgr<'_>, id: String, file: usize, dest: String) -> R<()> {
+    let (url, title) = torrent_playback(&mgr, &id, file)?;
+    crate::playback::save(std::path::Path::new(&dest), &title, &url).map_err(anyhow_err)
 }
 
 #[tauri::command]

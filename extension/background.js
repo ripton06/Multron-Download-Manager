@@ -43,6 +43,17 @@ function isMediaUrl(url) {
   return MEDIA_HOSTS.some((d) => h === d || h.endsWith('.' + d));
 }
 
+function internalStream(url) {
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === 'http:' && parsed.hostname === '127.0.0.1'
+      && !parsed.username && !parsed.password && !parsed.search && !parsed.hash
+      && /^\/stream\/[0-9a-f]{32}\/[0-9a-f]{40}\/\d+$/i.test(parsed.pathname);
+  } catch {
+    return false;
+  }
+}
+
 async function call(path, body, timeoutMs = 4000) {
   const { port } = await settings();
   const ctrl = new AbortController();
@@ -471,7 +482,7 @@ const decidesFilename = !!chrome.downloads.onDeterminingFilename;
 if (decidesFilename) {
   chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     const url = item.finalUrl || item.url || '';
-    if (ownDownloads.has(url) || !/^https?:/i.test(url)) {
+    if (ownDownloads.has(url) || !/^https?:/i.test(url) || internalStream(url)) {
       ownDownloads.delete(url);
       suggest();
       return;
@@ -486,7 +497,7 @@ if (decidesFilename) {
       ownDownloads.delete(url);
       return;
     }
-    if (!/^https?:/i.test(url)) return;
+    if (!/^https?:/i.test(url) || internalStream(url)) return;
     chrome.downloads.pause(item.id).catch(() => {});
     const resume = () => chrome.downloads.resume(item.id).catch(() => {});
     takeOver(item, url, resume).catch(resume);
@@ -504,6 +515,7 @@ async function waitForApproval(ms) {
 }
 
 async function takeOver(item, url, giveBack) {
+  if (internalStream(url)) return giveBack();
   const s = await settings();
   if (!s.intercept) return giveBack();
   const host = hostOf(url);
@@ -584,7 +596,7 @@ function streamOf(d) {
   } catch {
     return null;
   }
-  if (!/^https?:$/.test(u.protocol) || SKIP_HOSTS.test(u.hostname)) return null;
+  if (!/^https?:$/.test(u.protocol) || SKIP_HOSTS.test(u.hostname) || internalStream(d.url)) return null;
   const type = header(d.responseHeaders, 'content-type').split(';')[0].trim().toLowerCase();
   const path = u.pathname.toLowerCase();
   let kind = null;

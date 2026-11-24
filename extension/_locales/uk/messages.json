@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "Медіафайл"
+  },
+  "Copy_stream_URL": {
+    "message": "Копіювати посилання на потік"
+  },
+  "Open_in_system_player": {
+    "message": "Відкрити в системному програвачі"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "Відкрити список відтворення в системному програвачі?"
+  },
+  "Playlist_saved": {
+    "message": "Список відтворення збережено"
+  },
+  "Save_M3U_playlist": {
+    "message": "Зберегти список M3U"
+  },
+  "Extension_theme": {
+    "message": "Тема розширення"
+  },
+  "Follow_Multron": {
+    "message": "Як у Multron"
+  },
+  "System": {
+    "message": "Системна"
   }
 }

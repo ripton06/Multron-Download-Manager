@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "File media"
+  },
+  "Copy_stream_URL": {
+    "message": "Salin URL streaming"
+  },
+  "Open_in_system_player": {
+    "message": "Buka di pemutar bawaan"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "Buka daftar putar di pemutar bawaan?"
+  },
+  "Playlist_saved": {
+    "message": "Daftar putar disimpan"
+  },
+  "Save_M3U_playlist": {
+    "message": "Simpan daftar putar M3U"
+  },
+  "Extension_theme": {
+    "message": "Tema ekstensi"
+  },
+  "Follow_Multron": {
+    "message": "Ikuti Multron"
+  },
+  "System": {
+    "message": "Sistem"
   }
 }

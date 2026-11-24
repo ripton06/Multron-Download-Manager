@@ -109,6 +109,8 @@ export const api = {
   createTorrent: (source: string, trackers: string[], pieceKib: number | null, saveTo: string, seed: boolean) =>
     invoke<string>('create_torrent', { source, trackers, pieceKib, saveTo, seed }),
   torrentStreamUrl: (id: string, file: number) => invoke<string>('torrent_stream_url', { id, file }),
+  torrentPlay: (id: string, file: number, confirmed: boolean) => invoke<void>('torrent_play', { id, file, confirmed }),
+  torrentSavePlaylist: (id: string, file: number, dest: string) => invoke<void>('torrent_save_playlist', { id, file, dest }),
   rssFeeds: () => invoke<FeedView[]>('rss_feeds'),
   rssRefresh: () => invoke<number>('rss_refresh'),
   siteRuleTest: (rule: SiteRule, url: string) => invoke<PageScan>('site_rule_test', { rule, url }),

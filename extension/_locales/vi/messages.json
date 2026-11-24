@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "Tệp phương tiện"
+  },
+  "Copy_stream_URL": {
+    "message": "Sao chép URL luồng"
+  },
+  "Open_in_system_player": {
+    "message": "Mở trong trình phát mặc định"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "Mở danh sách trong trình phát mặc định?"
+  },
+  "Playlist_saved": {
+    "message": "Đã lưu danh sách phát"
+  },
+  "Save_M3U_playlist": {
+    "message": "Lưu danh sách M3U"
+  },
+  "Extension_theme": {
+    "message": "Giao diện tiện ích"
+  },
+  "Follow_Multron": {
+    "message": "Theo Multron"
+  },
+  "System": {
+    "message": "Hệ thống"
   }
 }

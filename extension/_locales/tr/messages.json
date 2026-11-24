@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "Medya dosyası"
+  },
+  "Copy_stream_URL": {
+    "message": "Akış URL’sini kopyala"
+  },
+  "Open_in_system_player": {
+    "message": "Varsayılan oynatıcıda aç"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "Oynatma listesi varsayılan oynatıcıda açılsın mı?"
+  },
+  "Playlist_saved": {
+    "message": "Oynatma listesi kaydedildi"
+  },
+  "Save_M3U_playlist": {
+    "message": "M3U oynatma listesini kaydet"
+  },
+  "Extension_theme": {
+    "message": "Eklenti teması"
+  },
+  "Follow_Multron": {
+    "message": "Multron’u takip et"
+  },
+  "System": {
+    "message": "Sistem"
   }
 }

@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "Mediální soubor"
+  },
+  "Copy_stream_URL": {
+    "message": "Kopírovat URL streamu"
+  },
+  "Open_in_system_player": {
+    "message": "Otevřít v systémovém přehrávači"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "Otevřít seznam skladeb v systémovém přehrávači?"
+  },
+  "Playlist_saved": {
+    "message": "Seznam skladeb uložen"
+  },
+  "Save_M3U_playlist": {
+    "message": "Uložit seznam skladeb M3U"
+  },
+  "Extension_theme": {
+    "message": "Motiv rozšíření"
+  },
+  "Follow_Multron": {
+    "message": "Podle Multronu"
+  },
+  "System": {
+    "message": "Systémový"
   }
 }

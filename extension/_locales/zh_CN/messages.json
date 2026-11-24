@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "媒体文件"
+  },
+  "Copy_stream_URL": {
+    "message": "复制流媒体 URL"
+  },
+  "Open_in_system_player": {
+    "message": "在默认播放器中打开"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "在默认播放器中打开播放列表？"
+  },
+  "Playlist_saved": {
+    "message": "播放列表已保存"
+  },
+  "Save_M3U_playlist": {
+    "message": "保存 M3U 播放列表"
+  },
+  "Extension_theme": {
+    "message": "扩展主题"
+  },
+  "Follow_Multron": {
+    "message": "跟随 Multron"
+  },
+  "System": {
+    "message": "系统"
   }
 }

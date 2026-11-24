@@ -96,7 +96,10 @@ async fn guard(req: Request, next: Next) -> Response {
             return (StatusCode::FORBIDDEN, Json(json!({ "error": "forbidden" }))).into_response();
         }
     }
-    let (method, path) = (req.method().clone(), req.uri().path().to_string());
+    let (method, path) = (
+        req.method().clone(),
+        crate::playback::log_path(req.uri().path()).to_owned(),
+    );
     let mut resp = if req.method() == Method::OPTIONS {
         StatusCode::NO_CONTENT.into_response()
     } else {
@@ -193,7 +196,7 @@ async fn stream(
     headers: HeaderMap,
 ) -> Response {
     use tokio::io::{AsyncReadExt, AsyncSeekExt};
-    if token != mgr.stream_token() {
+    if !mgr.permits_stream(&token, &hash, file) {
         return StatusCode::NOT_FOUND.into_response();
     }
     let (mut reader, len, name) = match mgr.open_stream(&hash, file).await {

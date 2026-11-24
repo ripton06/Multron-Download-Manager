@@ -24,7 +24,7 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | karem-adem-4 | https://unsplash.com/photos/nCk7iiQCn8Y |
 | karem-adem-5 | https://unsplash.com/photos/qPjTJttOByU |
 
-## Rust components (685)
+## Rust components (708)
 
 | Crate | Version | License |
 | --- | --- | --- |
@@ -37,6 +37,7 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | allocator-api2 | 0.2.21 | MIT OR Apache-2.0 |
 | android_system_properties | 0.1.6 | MIT OR Apache-2.0 |
 | anyhow | 1.0.104 | MIT OR Apache-2.0 |
+| arboard | 3.7.0 | MIT OR Apache-2.0 |
 | arc-swap | 1.9.2 | MIT OR Apache-2.0 |
 | arrayvec | 0.7.8 | MIT OR Apache-2.0 |
 | assert_cfg | 0.1.0 | Zlib |
@@ -91,21 +92,22 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | cairo-rs | 0.18.5 | MIT |
 | cairo-sys-rs | 0.18.2 | MIT |
 | camino | 1.2.6 | MIT OR Apache-2.0 |
-| cargo-platform | 0.1.9 | MIT OR Apache-2.0 |
 | cargo_metadata | 0.19.2 | MIT |
 | cargo_toml | 1.0.1 | Apache-2.0 OR MIT |
+| cargo-platform | 0.1.9 | MIT OR Apache-2.0 |
 | cbc | 0.1.2 | MIT OR Apache-2.0 |
 | cc | 1.8.0 | MIT OR Apache-2.0 |
 | cesu8 | 1.1.0 | Apache-2.0/MIT |
 | cfb | 0.14.0 | MIT |
+| cfg_aliases | 0.2.2 | MIT |
 | cfg-expr | 0.15.8 | MIT OR Apache-2.0 |
 | cfg-if | 1.0.5 | MIT OR Apache-2.0 |
-| cfg_aliases | 0.2.2 | MIT |
 | chacha20 | 0.10.2 | MIT OR Apache-2.0 |
 | chardetng | 1.0.0 | Apache-2.0 OR MIT |
 | chrono | 0.4.45 | MIT OR Apache-2.0 |
 | cipher | 0.4.4 | MIT OR Apache-2.0 |
 | cipher | 0.5.2 | MIT OR Apache-2.0 |
+| clipboard-win | 5.4.3 | BSL-1.0 |
 | cmake | 0.1.58 | MIT OR Apache-2.0 |
 | cmov | 0.5.4 | Apache-2.0 OR MIT |
 | combine | 4.6.9 | MIT |
@@ -114,17 +116,17 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | compression-codecs | 0.4.45 | MIT OR Apache-2.0 |
 | compression-core | 0.4.33 | MIT OR Apache-2.0 |
 | concurrent-queue | 2.5.0 | Apache-2.0 OR MIT |
-| const-oid | 0.9.6 | Apache-2.0 OR MIT |
-| const-oid | 0.10.2 | Apache-2.0 OR MIT |
 | const_panic | 0.2.17 | Zlib |
+| const-oid | 0.10.2 | Apache-2.0 OR MIT |
+| const-oid | 0.9.6 | Apache-2.0 OR MIT |
 | constant_time_eq | 0.6.1 | CC0-1.0 OR MIT-0 OR Apache-2.0 |
 | cookie | 0.18.2 | MIT OR Apache-2.0 |
-| core-foundation | 0.9.4 | MIT OR Apache-2.0 |
+| core_detect | 1.0.0 | MIT/Apache-2.0 |
 | core-foundation | 0.10.1 | MIT OR Apache-2.0 |
+| core-foundation | 0.9.4 | MIT OR Apache-2.0 |
 | core-foundation-sys | 0.8.7 | MIT OR Apache-2.0 |
 | core-graphics | 0.25.0 | MIT OR Apache-2.0 |
 | core-graphics-types | 0.2.0 | MIT OR Apache-2.0 |
-| core_detect | 1.0.0 | MIT/Apache-2.0 |
 | cpubits | 0.1.1 | MIT OR Apache-2.0 |
 | cpufeatures | 0.2.17 | MIT OR Apache-2.0 |
 | cpufeatures | 0.3.1 | MIT OR Apache-2.0 |
@@ -135,6 +137,7 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | crypto-common | 0.2.2 | MIT OR Apache-2.0 |
 | crypto-hash | 0.3.4 | MIT |
 | cssparser | 0.37.0 | MPL-2.0 |
+| cssparser | 0.38.0 | MPL-2.0 |
 | cssparser-macros | 0.7.1 | MPL-2.0 |
 | ctor | 1.0.13 | Apache-2.0 OR MIT |
 | ctr | 0.9.2 | MIT OR Apache-2.0 |
@@ -174,9 +177,10 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | dyn-clone | 1.0.20 | MIT OR Apache-2.0 |
 | ed25519 | 2.2.3 | Apache-2.0 OR MIT |
 | ed25519-dalek | 2.2.0 | BSD-3-Clause |
+| ego-tree | 0.11.1 | ISC |
 | either | 1.19.0 | MIT OR Apache-2.0 |
-| embed-resource | 3.0.12 | MIT |
 | embed_plist | 1.2.2 | MIT OR Apache-2.0 |
+| embed-resource | 3.0.12 | MIT |
 | encoding_rs | 0.8.42 | (Apache-2.0 OR MIT) AND BSD-3-Clause |
 | endi | 1.1.1 | MIT |
 | enumflags2 | 0.7.12 | MIT OR Apache-2.0 |
@@ -184,6 +188,7 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | equivalent | 1.0.3 | Apache-2.0 OR MIT |
 | erased-serde | 0.4.10 | MIT OR Apache-2.0 |
 | errno | 0.3.14 | MIT OR Apache-2.0 |
+| error-code | 3.4.0 | BSL-1.0 |
 | event-listener | 5.4.2 | Apache-2.0 OR MIT |
 | event-listener-strategy | 0.5.4 | Apache-2.0 OR MIT |
 | fastrand | 2.5.0 | Apache-2.0 OR MIT |
@@ -200,8 +205,8 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | foreign-types-shared | 0.1.1 | MIT/Apache-2.0 |
 | foreign-types-shared | 0.3.1 | MIT/Apache-2.0 |
 | form_urlencoded | 1.2.2 | MIT OR Apache-2.0 |
-| fs4 | 0.13.1 | MIT OR Apache-2.0 |
 | fs_extra | 1.3.0 | MIT |
+| fs4 | 0.13.1 | MIT OR Apache-2.0 |
 | funty | 2.0.0 | MIT |
 | futures | 0.3.34 | MIT OR Apache-2.0 |
 | futures-channel | 0.3.34 | MIT OR Apache-2.0 |
@@ -223,6 +228,8 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | gdkx11-sys | 0.18.2 | MIT |
 | generic-array | 0.12.4 | MIT |
 | generic-array | 0.14.7 | MIT |
+| gethostname | 1.1.0 | Apache-2.0 |
+| getopts | 0.2.24 | MIT OR Apache-2.0 |
 | getrandom | 0.2.17 | MIT OR Apache-2.0 |
 | getrandom | 0.3.4 | MIT OR Apache-2.0 |
 | getrandom | 0.4.3 | MIT OR Apache-2.0 |
@@ -250,6 +257,7 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | hex | 0.4.3 | MIT OR Apache-2.0 |
 | hmac | 0.13.0 | MIT OR Apache-2.0 |
 | html5ever | 0.39.0 | MIT OR Apache-2.0 |
+| html5ever | 0.40.1 | MIT OR Apache-2.0 |
 | http | 1.5.0 | MIT OR Apache-2.0 |
 | http-body | 1.1.0 | MIT |
 | http-body-util | 0.1.5 | MIT |
@@ -331,6 +339,7 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | lzma-rust2 | 0.16.5 | Apache-2.0 |
 | mac-notification-sys | 0.6.15 | MIT/Apache-2.0 |
 | markup5ever | 0.39.0 | MIT OR Apache-2.0 |
+| markup5ever | 0.40.0 | MIT OR Apache-2.0 |
 | matchers | 0.2.0 | MIT |
 | matchit | 0.8.4 | MIT AND BSD-3-Clause |
 | memchr | 2.8.3 | Unlicense OR MIT |
@@ -356,14 +365,14 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | notify-rust | 4.18.2 | MIT OR Apache-2.0 |
 | nu-ansi-term | 0.50.3 | MIT |
 | num | 0.2.1 | MIT/Apache-2.0 |
+| num_enum | 0.7.6 | BSD-3-Clause OR MIT OR Apache-2.0 |
+| num_enum_derive | 0.7.6 | BSD-3-Clause OR MIT OR Apache-2.0 |
 | num-complex | 0.2.4 | MIT/Apache-2.0 |
 | num-conv | 0.2.2 | MIT OR Apache-2.0 |
 | num-integer | 0.1.47 | MIT OR Apache-2.0 |
 | num-iter | 0.1.46 | MIT OR Apache-2.0 |
 | num-rational | 0.2.4 | MIT/Apache-2.0 |
 | num-traits | 0.2.19 | MIT OR Apache-2.0 |
-| num_enum | 0.7.6 | BSD-3-Clause OR MIT OR Apache-2.0 |
-| num_enum_derive | 0.7.6 | BSD-3-Clause OR MIT OR Apache-2.0 |
 | objc2 | 0.6.5 | MIT |
 | objc2-app-kit | 0.3.2 | Zlib OR Apache-2.0 OR MIT |
 | objc2-cloud-kit | 0.3.2 | Zlib OR Apache-2.0 OR MIT |
@@ -400,10 +409,15 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | pbkdf2 | 0.13.0 | MIT OR Apache-2.0 |
 | percent-encoding | 2.3.2 | MIT OR Apache-2.0 |
 | phf | 0.13.1 | MIT |
+| phf | 0.14.0 | MIT |
 | phf_codegen | 0.13.1 | MIT |
+| phf_codegen | 0.14.0 | MIT |
 | phf_generator | 0.13.1 | MIT |
+| phf_generator | 0.14.0 | MIT |
 | phf_macros | 0.13.1 | MIT |
+| phf_macros | 0.14.0 | MIT |
 | phf_shared | 0.13.1 | MIT |
+| phf_shared | 0.14.0 | MIT |
 | pin-project-lite | 0.2.17 | Apache-2.0 OR MIT |
 | piper | 0.2.5 | MIT OR Apache-2.0 |
 | pkcs8 | 0.10.2 | Apache-2.0 OR MIT |
@@ -436,12 +450,12 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | r-efi | 5.3.0 | MIT OR Apache-2.0 OR LGPL-2.1-or-later |
 | r-efi | 6.0.0 | MIT OR Apache-2.0 OR LGPL-2.1-or-later |
 | radium | 0.7.0 | MIT |
-| rand | 0.9.5 | MIT OR Apache-2.0 |
 | rand | 0.10.3 | MIT OR Apache-2.0 |
+| rand | 0.9.5 | MIT OR Apache-2.0 |
 | rand_chacha | 0.9.0 | MIT OR Apache-2.0 |
+| rand_core | 0.10.1 | MIT OR Apache-2.0 |
 | rand_core | 0.6.4 | MIT OR Apache-2.0 |
 | rand_core | 0.9.5 | MIT OR Apache-2.0 |
-| rand_core | 0.10.1 | MIT OR Apache-2.0 |
 | rand_pcg | 0.10.2 | MIT OR Apache-2.0 |
 | rapidhash | 4.5.1 | MIT OR Apache-2.0 |
 | raw-cpuid | 11.6.0 | MIT |
@@ -458,8 +472,8 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | ring | 0.17.14 | Apache-2.0 AND ISC |
 | ringbuf | 0.4.8 | MIT/Apache-2.0 |
 | rlimit | 0.11.0 | MIT |
-| rustc-hash | 2.1.3 | Apache-2.0 OR MIT |
 | rustc_version | 0.4.1 | MIT OR Apache-2.0 |
+| rustc-hash | 2.1.3 | Apache-2.0 OR MIT |
 | rustix | 1.1.5 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
 | rustls | 0.23.46 | Apache-2.0 OR ISC OR MIT |
 | rustls-native-certs | 0.8.5 | Apache-2.0 OR ISC OR MIT |
@@ -476,12 +490,13 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | schemars | 1.2.3 | MIT |
 | schemars_derive | 0.8.22 | MIT |
 | scopeguard | 1.2.0 | MIT OR Apache-2.0 |
+| scraper | 0.29.0 | ISC |
 | security-framework | 3.7.0 | MIT OR Apache-2.0 |
 | security-framework-sys | 2.17.0 | MIT OR Apache-2.0 |
 | selectors | 0.38.0 | MPL-2.0 |
+| selectors | 0.41.0 | MPL-2.0 |
 | semver | 1.0.28 | MIT OR Apache-2.0 |
 | serde | 1.0.229 | MIT OR Apache-2.0 |
-| serde-untagged | 0.1.9 | MIT OR Apache-2.0 |
 | serde_core | 1.0.229 | MIT OR Apache-2.0 |
 | serde_derive | 1.0.229 | MIT OR Apache-2.0 |
 | serde_derive_internals | 0.29.1 | MIT OR Apache-2.0 |
@@ -494,9 +509,11 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | serde_urlencoded | 0.7.1 | MIT/Apache-2.0 |
 | serde_with | 3.24.0 | MIT OR Apache-2.0 |
 | serde_with_macros | 3.24.0 | MIT OR Apache-2.0 |
+| serde-untagged | 0.1.9 | MIT OR Apache-2.0 |
 | serialize-to-javascript | 0.1.2 | MIT OR Apache-2.0 |
 | serialize-to-javascript-impl | 0.1.2 | MIT OR Apache-2.0 |
 | servo_arc | 0.4.3 | MIT OR Apache-2.0 |
+| servo_arc | 0.5.0 | MIT OR Apache-2.0 |
 | sevenz-rust2 | 0.20.2 | Apache-2.0 |
 | sha1 | 0.10.7 | MIT OR Apache-2.0 |
 | sha1 | 0.11.0 | MIT OR Apache-2.0 |
@@ -505,8 +522,8 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | shlex | 2.0.1 | MIT OR Apache-2.0 |
 | signal-hook-registry | 1.4.8 | MIT OR Apache-2.0 |
 | signature | 2.2.0 | Apache-2.0 OR MIT |
-| simd-adler32 | 0.3.10 | MIT |
 | simd_cesu8 | 1.2.0 | Apache-2.0 OR MIT |
+| simd-adler32 | 0.3.10 | MIT |
 | simdutf8 | 0.1.5 | MIT OR Apache-2.0 |
 | siphasher | 1.0.4 | MIT OR Apache-2.0 |
 | size_format | 1.0.2 | MIT OR Apache-2.0 |
@@ -521,7 +538,9 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | spki | 0.7.3 | Apache-2.0 OR MIT |
 | stable_deref_trait | 1.2.1 | MIT OR Apache-2.0 |
 | static_vcruntime | 3.0.0 | MIT OR Apache-2.0 OR Zlib |
+| string_cache | 0.11.0 | MIT OR Apache-2.0 |
 | string_cache | 0.9.0 | MIT OR Apache-2.0 |
+| string_cache_codegen | 0.11.2 | MIT OR Apache-2.0 |
 | string_cache_codegen | 0.6.1 | MIT OR Apache-2.0 |
 | strsim | 0.11.1 | MIT |
 | subtle | 2.6.1 | BSD-3-Clause |
@@ -603,6 +622,7 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | unicase | 2.10.0 | MIT OR Apache-2.0 |
 | unicode-ident | 1.0.27 | (MIT OR Apache-2.0) AND Unicode-3.0 |
 | unicode-segmentation | 1.13.3 | MIT OR Apache-2.0 |
+| unicode-width | 0.2.3 | MIT OR Apache-2.0 |
 | untrusted | 0.9.0 | ISC |
 | url | 2.5.8 | MIT OR Apache-2.0 |
 | urlencoding | 2.1.3 | MIT |
@@ -612,8 +632,8 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | uuid | 1.28.0 | Apache-2.0 OR MIT |
 | valuable | 0.1.1 | MIT |
 | vcpkg | 0.2.15 | MIT/Apache-2.0 |
-| version-compare | 0.2.1 | MIT |
 | version_check | 0.9.5 | MIT/Apache-2.0 |
+| version-compare | 0.2.1 | MIT |
 | vswhom | 0.1.0 | MIT |
 | vswhom-sys | 0.1.3 | MIT |
 | walkdir | 2.5.0 | Unlicense/MIT |
@@ -626,9 +646,10 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | wasm-bindgen-macro-support | 0.2.129 | MIT OR Apache-2.0 |
 | wasm-bindgen-shared | 0.2.129 | MIT OR Apache-2.0 |
 | wasm-streams | 0.5.0 | MIT OR Apache-2.0 |
+| web_atoms | 0.2.6 | MIT OR Apache-2.0 |
+| web_atoms | 0.3.0 | MIT OR Apache-2.0 |
 | web-sys | 0.3.106 | MIT OR Apache-2.0 |
 | web-time | 1.1.0 | MIT OR Apache-2.0 |
-| web_atoms | 0.2.6 | MIT OR Apache-2.0 |
 | webkit2gtk | 2.0.2 | MIT |
 | webkit2gtk-sys | 2.0.2 | MIT |
 | webpki-root-certs | 1.0.9 | CDLA-Permissive-2.0 |
@@ -641,26 +662,6 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | winapi-x86_64-pc-windows-gnu | 0.4.0 | MIT/Apache-2.0 |
 | window-vibrancy | 0.8.1 | Apache-2.0 OR MIT |
 | windows | 0.62.2 | MIT OR Apache-2.0 |
-| windows-collections | 0.3.2 | MIT OR Apache-2.0 |
-| windows-core | 0.62.2 | MIT OR Apache-2.0 |
-| windows-future | 0.3.2 | MIT OR Apache-2.0 |
-| windows-implement | 0.60.2 | MIT OR Apache-2.0 |
-| windows-interface | 0.59.3 | MIT OR Apache-2.0 |
-| windows-link | 0.2.1 | MIT OR Apache-2.0 |
-| windows-numerics | 0.3.1 | MIT OR Apache-2.0 |
-| windows-registry | 0.6.1 | MIT OR Apache-2.0 |
-| windows-result | 0.4.1 | MIT OR Apache-2.0 |
-| windows-strings | 0.5.1 | MIT OR Apache-2.0 |
-| windows-sys | 0.45.0 | MIT OR Apache-2.0 |
-| windows-sys | 0.52.0 | MIT OR Apache-2.0 |
-| windows-sys | 0.59.0 | MIT OR Apache-2.0 |
-| windows-sys | 0.60.2 | MIT OR Apache-2.0 |
-| windows-sys | 0.61.2 | MIT OR Apache-2.0 |
-| windows-targets | 0.42.2 | MIT OR Apache-2.0 |
-| windows-targets | 0.52.6 | MIT OR Apache-2.0 |
-| windows-targets | 0.53.5 | MIT OR Apache-2.0 |
-| windows-threading | 0.2.1 | MIT OR Apache-2.0 |
-| windows-version | 0.1.7 | MIT OR Apache-2.0 |
 | windows_aarch64_gnullvm | 0.42.2 | MIT OR Apache-2.0 |
 | windows_aarch64_gnullvm | 0.52.6 | MIT OR Apache-2.0 |
 | windows_aarch64_gnullvm | 0.53.1 | MIT OR Apache-2.0 |
@@ -684,6 +685,26 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | windows_x86_64_msvc | 0.42.2 | MIT OR Apache-2.0 |
 | windows_x86_64_msvc | 0.52.6 | MIT OR Apache-2.0 |
 | windows_x86_64_msvc | 0.53.1 | MIT OR Apache-2.0 |
+| windows-collections | 0.3.2 | MIT OR Apache-2.0 |
+| windows-core | 0.62.2 | MIT OR Apache-2.0 |
+| windows-future | 0.3.2 | MIT OR Apache-2.0 |
+| windows-implement | 0.60.2 | MIT OR Apache-2.0 |
+| windows-interface | 0.59.3 | MIT OR Apache-2.0 |
+| windows-link | 0.2.1 | MIT OR Apache-2.0 |
+| windows-numerics | 0.3.1 | MIT OR Apache-2.0 |
+| windows-registry | 0.6.1 | MIT OR Apache-2.0 |
+| windows-result | 0.4.1 | MIT OR Apache-2.0 |
+| windows-strings | 0.5.1 | MIT OR Apache-2.0 |
+| windows-sys | 0.45.0 | MIT OR Apache-2.0 |
+| windows-sys | 0.52.0 | MIT OR Apache-2.0 |
+| windows-sys | 0.59.0 | MIT OR Apache-2.0 |
+| windows-sys | 0.60.2 | MIT OR Apache-2.0 |
+| windows-sys | 0.61.2 | MIT OR Apache-2.0 |
+| windows-targets | 0.42.2 | MIT OR Apache-2.0 |
+| windows-targets | 0.52.6 | MIT OR Apache-2.0 |
+| windows-targets | 0.53.5 | MIT OR Apache-2.0 |
+| windows-threading | 0.2.1 | MIT OR Apache-2.0 |
+| windows-version | 0.1.7 | MIT OR Apache-2.0 |
 | winnow | 0.5.40 | MIT |
 | winnow | 1.0.4 | MIT |
 | winreg | 0.56.0 | MIT |
@@ -693,6 +714,8 @@ The five built-in backgrounds in *Settings → Appearance → Background image* 
 | wyz | 0.5.1 | MIT |
 | x11 | 2.21.0 | MIT |
 | x11-dl | 2.21.0 | MIT |
+| x11rb | 0.13.2 | MIT OR Apache-2.0 |
+| x11rb-protocol | 0.13.2 | MIT OR Apache-2.0 |
 | yoke | 0.8.3 | Unicode-3.0 |
 | yoke-derive | 0.8.4 | Unicode-3.0 |
 | zbus | 5.19.0 | MIT |

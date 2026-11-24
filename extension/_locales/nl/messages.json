@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "Mediabestand"
+  },
+  "Copy_stream_URL": {
+    "message": "Stream-URL kopiëren"
+  },
+  "Open_in_system_player": {
+    "message": "Openen in de standaardspeler"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "Afspeellijst openen in de standaardspeler?"
+  },
+  "Playlist_saved": {
+    "message": "Afspeellijst opgeslagen"
+  },
+  "Save_M3U_playlist": {
+    "message": "M3U-afspeellijst opslaan"
+  },
+  "Extension_theme": {
+    "message": "Thema van extensie"
+  },
+  "Follow_Multron": {
+    "message": "Multron volgen"
+  },
+  "System": {
+    "message": "Systeem"
   }
 }

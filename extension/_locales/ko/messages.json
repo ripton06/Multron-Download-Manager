@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "미디어 파일"
+  },
+  "Copy_stream_URL": {
+    "message": "스트림 URL 복사"
+  },
+  "Open_in_system_player": {
+    "message": "기본 플레이어에서 열기"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "기본 플레이어에서 재생 목록을 여시겠습니까?"
+  },
+  "Playlist_saved": {
+    "message": "재생 목록 저장됨"
+  },
+  "Save_M3U_playlist": {
+    "message": "M3U 재생 목록 저장"
+  },
+  "Extension_theme": {
+    "message": "확장 프로그램 테마"
+  },
+  "Follow_Multron": {
+    "message": "Multron에 맞추기"
+  },
+  "System": {
+    "message": "시스템"
   }
 }

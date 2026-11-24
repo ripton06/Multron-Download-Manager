@@ -30,6 +30,7 @@
         "https://*/*"
       ],
       "js": [
+        "theme.js",
         "content.js"
       ],
       "css": [

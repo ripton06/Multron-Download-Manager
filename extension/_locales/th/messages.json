@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "ไฟล์สื่อ"
+  },
+  "Copy_stream_URL": {
+    "message": "คัดลอก URL สตรีม"
+  },
+  "Open_in_system_player": {
+    "message": "เปิดในโปรแกรมเล่นเริ่มต้น"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "เปิดรายการเล่นในโปรแกรมเล่นเริ่มต้นหรือไม่?"
+  },
+  "Playlist_saved": {
+    "message": "บันทึกรายการเล่นแล้ว"
+  },
+  "Save_M3U_playlist": {
+    "message": "บันทึกรายการเล่น M3U"
+  },
+  "Extension_theme": {
+    "message": "ธีมส่วนขยาย"
+  },
+  "Follow_Multron": {
+    "message": "ใช้ตาม Multron"
+  },
+  "System": {
+    "message": "ระบบ"
   }
 }

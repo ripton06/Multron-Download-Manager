@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "Mediefil"
+  },
+  "Copy_stream_URL": {
+    "message": "Kopiera strömmens URL"
+  },
+  "Open_in_system_player": {
+    "message": "Öppna i standardspelaren"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "Öppna spellistan i standardspelaren?"
+  },
+  "Playlist_saved": {
+    "message": "Spellistan har sparats"
+  },
+  "Save_M3U_playlist": {
+    "message": "Spara M3U-spellista"
+  },
+  "Extension_theme": {
+    "message": "Tilläggets tema"
+  },
+  "Follow_Multron": {
+    "message": "Följ Multron"
+  },
+  "System": {
+    "message": "System"
   }
 }

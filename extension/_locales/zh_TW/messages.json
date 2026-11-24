@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "媒體檔案"
+  },
+  "Copy_stream_URL": {
+    "message": "複製串流 URL"
+  },
+  "Open_in_system_player": {
+    "message": "在預設播放器中開啟"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "在預設播放器中開啟播放清單？"
+  },
+  "Playlist_saved": {
+    "message": "播放清單已儲存"
+  },
+  "Save_M3U_playlist": {
+    "message": "儲存 M3U 播放清單"
+  },
+  "Extension_theme": {
+    "message": "擴充功能主題"
+  },
+  "Follow_Multron": {
+    "message": "跟隨 Multron"
+  },
+  "System": {
+    "message": "系統"
   }
 }

@@ -36,26 +36,14 @@ pub struct FeedView {
     pub downloaded: Vec<String>,
 }
 
+#[derive(Default)]
 pub struct AutoState {
     applied: Option<(u64, u64, u64)>,
     when_done_armed: bool,
     rss_last: Option<Instant>,
     rss_busy: bool,
     rss: Option<RssStore>,
-    pub stream_token: String,
-}
-
-impl Default for AutoState {
-    fn default() -> Self {
-        Self {
-            applied: None,
-            when_done_armed: false,
-            rss_last: None,
-            rss_busy: false,
-            rss: None,
-            stream_token: uuid::Uuid::new_v4().simple().to_string(),
-        }
-    }
+    pub stream_tokens: crate::playback::StreamTokens,
 }
 
 static SCHEDULER_FIRED: parking_lot::Mutex<Option<String>> = parking_lot::Mutex::new(None);
@@ -374,8 +362,12 @@ impl Manager {
         }
     }
 
-    pub fn stream_token(&self) -> String {
-        self.auto.lock().stream_token.clone()
+    pub fn stream_token(&self, hash: &str, file: usize) -> String {
+        self.auto.lock().stream_tokens.token(hash, file)
+    }
+
+    pub fn permits_stream(&self, token: &str, hash: &str, file: usize) -> bool {
+        self.auto.lock().stream_tokens.allows(token, hash, file)
     }
 
     pub(super) fn reset_applied_limits(&self) {
@@ -1863,13 +1855,6 @@ impl Manager {
         self.mark_dirty();
         self.emit_now();
         Ok(())
-    }
-
-    pub fn torrent_hash(&self, id: &str) -> Result<String> {
-        self.record(id)?
-            .torrent
-            .and_then(|t| t.info_hash)
-            .ok_or_else(|| anyhow!("metadata is still being fetched"))
     }
 
     pub fn torrent_file_path(&self, id: &str) -> Result<PathBuf> {

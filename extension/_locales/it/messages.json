@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "File multimediale"
+  },
+  "Copy_stream_URL": {
+    "message": "Copia URL dello stream"
+  },
+  "Open_in_system_player": {
+    "message": "Apri nel lettore predefinito"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "Aprire la playlist nel lettore predefinito?"
+  },
+  "Playlist_saved": {
+    "message": "Playlist salvata"
+  },
+  "Save_M3U_playlist": {
+    "message": "Salva playlist M3U"
+  },
+  "Extension_theme": {
+    "message": "Tema dell’estensione"
+  },
+  "Follow_Multron": {
+    "message": "Segui Multron"
+  },
+  "System": {
+    "message": "Sistema"
   }
 }

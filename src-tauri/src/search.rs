@@ -7,9 +7,12 @@ use serde_json::Value;
 
 use crate::settings::Settings;
 
+mod rutor;
+
 pub const TORRENTS_CSV: &str = "torrents-csv";
 pub const ARCHIVE: &str = "archive";
-pub const BUILTIN: [(&str, &str, &str); 2] = [
+pub const RUTOR: &str = "rutor";
+pub const BUILTIN: [(&str, &str, &str); 3] = [
     (
         TORRENTS_CSV,
         "Torrents-CSV",
@@ -20,6 +23,7 @@ pub const BUILTIN: [(&str, &str, &str); 2] = [
         "Internet Archive",
         "https://archive.org/advancedsearch.php?q=title%3A({query})+AND+btih%3A*&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=item_size&fl%5B%5D=publicdate&rows=100&output=json",
     ),
+    (RUTOR, "RuTor", "http://rutor.info/search/0/0/100/0/{query}"),
 ];
 const TRACKERS: [&str; 4] = [
     "udp://tracker.opentrackr.org:1337/announce",
@@ -212,14 +216,31 @@ async fn query_site(
     site: &SiteView,
     query: &str,
 ) -> Result<Vec<SearchResult>> {
-    let resp = client
-        .get(fill(&site.url, query))
-        .timeout(TIMEOUT)
-        .send()
-        .await?;
+    let request_url = if site.id == RUTOR {
+        rutor::search_url(&site.url, query)
+    } else {
+        fill(&site.url, query)
+    };
+    let mut resp = client.get(request_url).timeout(TIMEOUT).send().await?;
     let status = resp.status();
     if !status.is_success() {
         bail!("the site answered HTTP {status}");
+    }
+    if site.id == RUTOR {
+        let final_url = resp.url().clone();
+        rutor::validate_origin(&final_url)?;
+        let limit = 2 * 1024 * 1024;
+        if resp.content_length().is_some_and(|n| n > limit as u64) {
+            bail!("RuTor returned a response that is too large");
+        }
+        let mut bytes = Vec::new();
+        while let Some(chunk) = resp.chunk().await? {
+            if bytes.len() + chunk.len() > limit {
+                bail!("RuTor returned a response that is too large");
+            }
+            bytes.extend_from_slice(&chunk);
+        }
+        return rutor::parse(&String::from_utf8(bytes)?, &final_url);
     }
     let body = resp.text().await?;
     let mut found = match site.id.as_str() {

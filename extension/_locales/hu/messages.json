@@ -244,5 +244,29 @@
   },
   "Media_file": {
     "message": "Médiafájl"
+  },
+  "Copy_stream_URL": {
+    "message": "Stream URL másolása"
+  },
+  "Open_in_system_player": {
+    "message": "Megnyitás az alapértelmezett lejátszóban"
+  },
+  "Open_the_playlist_in_your_system_player": {
+    "message": "Megnyitja a lejátszási listát az alapértelmezett lejátszóban?"
+  },
+  "Playlist_saved": {
+    "message": "Lejátszási lista mentve"
+  },
+  "Save_M3U_playlist": {
+    "message": "M3U lejátszási lista mentése"
+  },
+  "Extension_theme": {
+    "message": "Bővítmény témája"
+  },
+  "Follow_Multron": {
+    "message": "Multron követése"
+  },
+  "System": {
+    "message": "Rendszer"
   }
 }

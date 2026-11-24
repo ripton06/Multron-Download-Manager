@@ -12,7 +12,7 @@ function fill(text, subs) {
 
 function tr(text, ...subs) {
   const id = text.replace(/[^A-Za-z0-9]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 120);
-  if (uiMessages) return fill(uiMessages[id] || text, subs);
+  if (uiMessages?.[id]) return fill(uiMessages[id], subs);
   let out = '';
   try {
     out = chrome.i18n.getMessage(id, subs.map(String));
@@ -41,13 +41,26 @@ function localize() {
 localize();
 
 const THEME_ATTR = 'data-theme';
-function applyTheme(setting) {
-  const dark = setting === 'dark' || (setting !== 'light' && !window.matchMedia?.('(prefers-color-scheme: light)').matches);
-  document.documentElement.setAttribute(THEME_ATTR, dark ? 'dark' : 'light');
+const systemTheme = window.matchMedia('(prefers-color-scheme: light)');
+let themeState = { ...MultronTheme.defaults };
+function applyTheme(settings) {
+  themeState = { ...themeState, ...settings };
+  document.documentElement.setAttribute(THEME_ATTR, MultronTheme.resolve(themeState, systemTheme.matches));
+  $('themeMode').value = MultronTheme.mode(themeState.themeMode);
 }
-chrome.storage.local.get({ uiTheme: 'system' }).then(({ uiTheme }) => applyTheme(uiTheme)).catch(() => applyTheme('system'));
+chrome.storage.local.get(MultronTheme.defaults).then(applyTheme).catch(() => applyTheme(MultronTheme.defaults));
 chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === 'local' && changes.uiTheme) applyTheme(changes.uiTheme.newValue);
+  if (area !== 'local' || (!changes.uiTheme && !changes.themeMode)) return;
+  const update = {};
+  if (changes.uiTheme) update.uiTheme = changes.uiTheme.newValue;
+  if (changes.themeMode) update.themeMode = changes.themeMode.newValue;
+  applyTheme(update);
+});
+systemTheme.addEventListener('change', () => applyTheme({}));
+$('themeMode').addEventListener('change', () => {
+  const themeMode = MultronTheme.mode($('themeMode').value);
+  applyTheme({ themeMode });
+  chrome.storage.local.set({ themeMode }).catch(() => chrome.storage.local.get(MultronTheme.defaults).then(applyTheme));
 });
 
 chrome.storage.local.get({ uiMessages: null }).then(({ uiMessages: m }) => {

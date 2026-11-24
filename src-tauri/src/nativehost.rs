@@ -218,11 +218,34 @@ fn unix_manifest_paths() -> Vec<PathBuf> {
         .collect()
 }
 
+#[cfg(windows)]
+fn owns_windows_manifest(value: &str, expected: &Path) -> bool {
+    value.replace('/', "\\").to_lowercase()
+        == expected.to_string_lossy().replace('/', "\\").to_lowercase()
+}
+
 pub fn unregister(data_dir: &Path) {
     #[cfg(windows)]
     {
         use std::os::windows::process::CommandExt;
         for vendor in VENDORS {
+            let key = format!(r"Software\{vendor}\NativeMessagingHosts\{HOST_NAME}");
+            let kind = if vendor == "Mozilla" {
+                "firefox"
+            } else {
+                "chromium"
+            };
+            let expected = data_dir
+                .join("native-host")
+                .join(kind)
+                .join(format!("{HOST_NAME}.json"));
+            let owned = windows_registry::CURRENT_USER
+                .open(&key)
+                .and_then(|key| key.get_string(""))
+                .is_ok_and(|value| owns_windows_manifest(&value, &expected));
+            if !owned {
+                continue;
+            }
             let _ = Command::new("reg")
                 .args([
                     "delete",
@@ -248,6 +271,25 @@ pub fn unregister(data_dir: &Path) {
         if let Some(home) = crate::flatpak::home() {
             unregister_flatpaks(&home);
         }
+    }
+}
+
+#[cfg(all(test, windows))]
+mod ownership_tests {
+    use super::*;
+
+    #[test]
+    fn another_portable_copy_cannot_remove_the_installed_native_host() {
+        let expected =
+            Path::new(r"C:\portable\data\native-host\chromium\com.multron.downloadmanager.json");
+        assert!(owns_windows_manifest(
+            r"c:\PORTABLE\data\native-host\chromium\com.multron.downloadmanager.json",
+            expected
+        ));
+        assert!(!owns_windows_manifest(
+            r"C:\installed\data\native-host\chromium\com.multron.downloadmanager.json",
+            expected
+        ));
     }
 }
 

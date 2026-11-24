@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { save as saveDialog } from '@tauri-apps/plugin-dialog';
+  import { ask, save as saveDialog } from '@tauri-apps/plugin-dialog';
   import { app } from '../lib/store.svelte';
   import { api, errorText } from '../lib/api';
   import { t, i18n } from '../lib/i18n.svelte';
@@ -34,6 +34,7 @@
   let loadError = $state<string | null>(null);
   let selection = $state<Set<number> | null>(null);
   let canvas = $state<HTMLCanvasElement | null>(null);
+  let playbackBusy = $state(false);
 
   async function load() {
     if (!item.torrent?.infoHash) {
@@ -126,7 +127,31 @@
   const PLAYABLE = /\.(mp4|mkv|webm|avi|mov|m4v|wmv|flv|ts|mp3|flac|m4a|aac|ogg|opus|wav)$/i;
 
   async function play(index: number) {
-    await app.run(async () => api.openUrl(await api.torrentStreamUrl(item.id, index)));
+    if (playbackBusy) return;
+    playbackBusy = true;
+    try {
+      if (app.settings?.askBeforeOpeningFiles && !(await ask(t('Open the playlist in your system player?'), { title: t('Open in system player'), kind: 'info' }))) return;
+      await app.run(() => api.torrentPlay(item.id, index, true));
+    } finally {
+      playbackBusy = false;
+    }
+  }
+
+  async function copyStream(index: number) {
+    await app.run(async () => navigator.clipboard.writeText(await api.torrentStreamUrl(item.id, index)), t('Copied'));
+  }
+
+  async function savePlaylist(index: number) {
+    if (playbackBusy) return;
+    playbackBusy = true;
+    try {
+      const name = (files.find((f) => f.index === index)?.name ?? item.name).split(/[\\/]/).pop() ?? 'playlist';
+      const defaultPath = name.replace(/[<>:"/\\|?*\x00-\x1f]/g, '_').replace(/\.[^.]*$/, '') + '.m3u';
+      const dest = await saveDialog({ defaultPath, filters: [{ name: 'M3U', extensions: ['m3u', 'm3u8'] }] });
+      if (dest) await app.run(() => api.torrentSavePlaylist(item.id, index, dest), t('Playlist saved'));
+    } finally {
+      playbackBusy = false;
+    }
   }
 
   async function recheck() {
@@ -199,7 +224,11 @@
             </td>
             <td>
               {#if PLAYABLE.test(f.name) && selected.has(f.index)}
-                <button class="btn !h-[24px]" title={t('Play while downloading (streams the file in order)')} onclick={() => play(f.index)}><Icon name="play" size={11} />{t('Play')}</button>
+                <div class="flex items-center gap-1">
+                  <button class="btn !h-[24px]" title={t('Open in system player')} disabled={playbackBusy || selection !== null} onclick={() => play(f.index)}><Icon name="play" size={11} />{t('Play')}</button>
+                  <button class="icon-btn !w-6 !h-6" title={t('Copy stream URL')} aria-label={t('Copy stream URL')} disabled={playbackBusy || selection !== null} onclick={() => copyStream(f.index)}><Icon name="copy" size={12} /></button>
+                  <button class="icon-btn !w-6 !h-6" title={t('Save M3U playlist')} aria-label={t('Save M3U playlist')} disabled={playbackBusy || selection !== null} onclick={() => savePlaylist(f.index)}><Icon name="file" size={12} /></button>
+                </div>
               {/if}
             </td>
           </tr>
