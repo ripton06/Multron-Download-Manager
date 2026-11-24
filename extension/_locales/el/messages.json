@@ -268,5 +268,11 @@
   },
   "System": {
     "message": "Σύστημα"
+  },
+  "Light": {
+    "message": "Ανοιχτό"
+  },
+  "Dark": {
+    "message": "Σκούρο"
   }
 }

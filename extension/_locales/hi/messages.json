@@ -268,5 +268,11 @@
   },
   "System": {
     "message": "सिस्टम"
+  },
+  "Light": {
+    "message": "हल्का"
+  },
+  "Dark": {
+    "message": "गहरा"
   }
 }

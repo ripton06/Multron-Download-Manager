@@ -268,5 +268,11 @@
   },
   "System": {
     "message": "Systémový"
+  },
+  "Light": {
+    "message": "Světlý"
+  },
+  "Dark": {
+    "message": "Tmavý"
   }
 }

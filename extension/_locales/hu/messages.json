@@ -268,5 +268,11 @@
   },
   "System": {
     "message": "Rendszer"
+  },
+  "Light": {
+    "message": "Világos"
+  },
+  "Dark": {
+    "message": "Sötét"
   }
 }

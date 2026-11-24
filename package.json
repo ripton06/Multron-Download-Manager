@@ -10,6 +10,8 @@
     "dev": "tauri dev",
     "build": "tauri build",
     "build:debug": "tauri build --debug",
+    "build:fork": "tauri build --config src-tauri/tauri.fork.conf.json --no-bundle",
+    "build:fork:debug": "tauri build --debug --config src-tauri/tauri.fork.conf.json --no-bundle",
     "build:linux": "tauri build --bundles deb,rpm,appimage",
     "build:mac": "tauri build --bundles app,dmg",
     "build:windows": "node scripts/build-windows.mjs",

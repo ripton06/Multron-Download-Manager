@@ -268,5 +268,11 @@
   },
   "System": {
     "message": "Sistem"
+  },
+  "Light": {
+    "message": "Terang"
+  },
+  "Dark": {
+    "message": "Gelap"
   }
 }

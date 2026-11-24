@@ -268,5 +268,11 @@
   },
   "System": {
     "message": "Systeem"
+  },
+  "Light": {
+    "message": "Licht"
+  },
+  "Dark": {
+    "message": "Donker"
   }
 }

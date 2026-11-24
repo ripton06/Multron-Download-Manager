@@ -268,5 +268,11 @@
   },
   "System": {
     "message": "Системна"
+  },
+  "Light": {
+    "message": "Світла"
+  },
+  "Dark": {
+    "message": "Темна"
   }
 }

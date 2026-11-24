@@ -268,5 +268,11 @@
   },
   "System": {
     "message": "Hệ thống"
+  },
+  "Light": {
+    "message": "Sáng"
+  },
+  "Dark": {
+    "message": "Tối"
   }
 }

@@ -268,5 +268,11 @@
   },
   "System": {
     "message": "System"
+  },
+  "Light": {
+    "message": "Light"
+  },
+  "Dark": {
+    "message": "Dark"
   }
 }

@@ -1,0 +1,19 @@
+{
+  "productName": "Multron RuTor Lab",
+  "identifier": "com.ripton06.multron.rutorlab",
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Multron RuTor Lab",
+        "width": 1180,
+        "height": 760,
+        "minWidth": 900,
+        "minHeight": 560,
+        "center": true,
+        "visible": false,
+        "backgroundColor": "#161617"
+      }
+    ]
+  }
+}

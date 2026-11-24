@@ -268,5 +268,11 @@
   },
   "System": {
     "message": "Sistem"
+  },
+  "Light": {
+    "message": "Luminos"
+  },
+  "Dark": {
+    "message": "Întunecat"
   }
 }

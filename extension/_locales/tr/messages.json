@@ -268,5 +268,11 @@
   },
   "System": {
     "message": "Sistem"
+  },
+  "Light": {
+    "message": "Açık"
+  },
+  "Dark": {
+    "message": "Koyu"
   }
 }

@@ -268,5 +268,11 @@
   },
   "System": {
     "message": "システム"
+  },
+  "Light": {
+    "message": "ライト"
+  },
+  "Dark": {
+    "message": "ダーク"
   }
 }
